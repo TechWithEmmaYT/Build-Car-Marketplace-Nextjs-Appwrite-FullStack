@@ -35,13 +35,10 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
   onValuesChange,
   hasSearch = false,
   hasClearButton = false,
-  minMaxInput = false,
   children,
 }) => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
-  const [minValue, setMinValue] = React.useState<string>("");
-  const [maxValue, setMaxValue] = React.useState<string>("");
 
   React.useEffect(() => {
     if (hasSearch && options) {
@@ -77,24 +74,6 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full text-sm focus:!ring-0 focus:!shadow-none border"
-            />
-          </div>
-        )}
-        {minMaxInput && (
-          <div className="flex space-x-2 mb-2">
-            <Input
-              type="number"
-              placeholder="Min"
-              value={minValue}
-              onChange={(e) => setMinValue(e.target.value)}
-              className="w-1/2 text-sm focus:!ring-0 focus:!shadow-none border"
-            />
-            <Input
-              type="number"
-              placeholder="Max"
-              value={maxValue}
-              onChange={(e) => setMaxValue(e.target.value)}
-              className="w-1/2 text-sm focus:!ring-0 focus:!shadow-none border"
             />
           </div>
         )}

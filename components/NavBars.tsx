@@ -33,6 +33,10 @@ const NavBar = () => {
     }
     router.push("/my-shop/add-listing");
   };
+
+  const hideSearchPathname = ["/", "/my-shop/add-listing", "/my-shop/messages"];
+  const hideNavPath = ["/my-shop", "/my-shop/add-listing", "/my-shop/messages"];
+
   return (
     <header
       className="w-full bg-primary sticky top-0 align-top z-10 h-14"
@@ -49,7 +53,7 @@ const NavBar = () => {
         text-white/80 lg:space-x-6"
         >
           <li className="flex-[0.6] hidden md:flex">
-            {pathname !== "/" && (
+            {!hideSearchPathname.includes(pathname) && (
               <div
                 className="w-full max-w-[320px] h-10 bg-white rounded-lg
              relative"
@@ -66,21 +70,25 @@ const NavBar = () => {
               </div>
             )}
           </li>
-          <li>
-            <Link href="/" className="text-sm font-medium">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-sm font-medium">
-              Services & Repair
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-sm font-medium">
-              Pricings
-            </Link>
-          </li>
+          {!hideNavPath.includes(pathname) && (
+            <>
+              <li>
+                <Link href="/" className="text-sm font-medium">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm font-medium">
+                  Services & Repair
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm font-medium">
+                  Pricings
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
 
         <div className="ml-auto flex items-center space-x-4">

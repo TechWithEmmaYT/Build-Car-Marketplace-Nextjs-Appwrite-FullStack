@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
-
-//const dm_sans = DM_Sans({ subsets: ["latin"] });
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Auto Hunt",
@@ -18,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`!bg-[#EBF2F7] antialiased`}>
-        <NuqsAdapter>{children}</NuqsAdapter>
+        <NuqsAdapter>
+          {children}
+          <Toaster />
+        </NuqsAdapter>
       </body>
     </html>
   );

@@ -113,3 +113,14 @@ export const carFeatures = {
   "Third-row Seating": false,
   "Four-Wheel Drive (4WD)": true,
 };
+
+export const carBrands = [
+  { value: "brandNew", label: "Brand New" },
+  { value: "used", label: "Used" },
+];
+
+export const carModels = [];
+
+export const carYears = [];
+
+export const carColors = [];
