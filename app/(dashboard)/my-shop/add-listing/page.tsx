@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,6 +17,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { addListingFields } from "@/constants/listing-fields";
 import FormGenerator from "@/components/FormGenerator";
 import { Button } from "@/components/ui/button";
+import { carModels } from "@/constants/cars";
 
 const AddListing = () => {
   const formSchema = z.object(
@@ -59,8 +60,6 @@ const AddListing = () => {
     defaultValues: {},
   });
 
-  console.log(form.formState.errors);
-
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
@@ -68,6 +67,7 @@ const AddListing = () => {
   const handleImageUrls = (imageUrls: string[]) => {
     console.log("Uploaded files in AddListingPage:", imageUrls);
   };
+  console.log(form.getValues(), "values");
   return (
     <main className="container mx-auto px-4 pt-3 pb-8">
       <div className="max-w-4xl mx-auto pt-5">
@@ -132,24 +132,39 @@ const AddListing = () => {
                           control={form.control}
                           name={field.name}
                           disabled={field.disabled}
-                          render={({ field: formField }) => (
-                            <FormItem
-                              className={`${
-                                field.col ? `col-span-${field.col}` : ""
-                              }`}
-                            >
-                              <FormControl>
-                                <FormGenerator
-                                  field={field}
-                                  register={form.register}
-                                  errors={form.formState.errors}
-                                  defaultValue={field.value}
-                                  {...formField}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                          render={({ field: formField }) => {
+                            const brand = form.getValues().brand;
+                            const filteredModels =
+                              field.name === "model" && brand
+                                ? field?.options?.filter(
+                                    (model) => model.key === brand
+                                  )
+                                : [];
+                            return (
+                              <FormItem
+                                className={`${
+                                  field.col ? `col-span-${field.col}` : ""
+                                }`}
+                              >
+                                <FormControl>
+                                  <FormGenerator
+                                    field={{
+                                      ...field,
+                                      options:
+                                        field.name === "model"
+                                          ? filteredModels
+                                          : field.options,
+                                    }}
+                                    register={form.register}
+                                    errors={form.formState.errors}
+                                    formValue={formField.value}
+                                    onChange={formField.onChange}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            );
+                          }}
                         />
                       ))}
                     </div>

@@ -13,6 +13,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import {
+  carBrands,
+  carConditions,
+  carFuelTypes,
+  carModels,
+  carYears,
+} from "@/constants/cars";
 
 interface FilterOption {
   label: string;
@@ -39,42 +46,17 @@ const HeroFilter = () => {
   }>({});
 
   const filterOptions: Record<string, FilterOption[]> = {
-    brands: [
-      { label: "Toyota", value: "toyota" },
-      { label: "Honda", value: "honda" },
-      { label: "Ford", value: "ford" },
-      { label: "BMW", value: "bmw" },
-      { label: "Mercedes", value: "mercedes" },
-    ],
-    condition: [
-      { label: "New", value: "new" },
-      { label: "Old", value: "old" },
-    ],
+    brands: carBrands,
+    condition: carConditions,
     price: [
       { label: "Under $10k", value: "<=10000" },
       { label: "$10,000 - $20,000", value: "10000-20000" },
       { label: "$20,000 - $30,000", value: "20000-30000" },
       { label: "Over $30k", value: ">=300000" },
     ],
-    models: [
-      { label: "Sedan", value: "sedan" },
-      { label: "SUV", value: "suv" },
-      { label: "Truck", value: "truck" },
-      { label: "Coupe", value: "coupe" },
-    ],
-    fuelTypes: [
-      { label: "Petrol", value: "petrol" },
-      { label: "Diesel", value: "diesel" },
-      { label: "Electric", value: "electric" },
-      { label: "Hybrid", value: "hybrid" },
-    ],
-    years: [
-      { label: "2023", value: "2023" },
-      { label: "2022", value: "2022" },
-      { label: "2021", value: "2021" },
-      { label: "2020", value: "2020" },
-      { label: "2019", value: "<=2019" },
-    ],
+    models: carModels,
+    fuelTypes: carFuelTypes,
+    years: carYears,
   };
 
   const handleFilterChange = (

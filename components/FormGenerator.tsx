@@ -18,7 +18,8 @@ type FormGeneratorProps = {
   field: FieldType;
   register: UseFormRegister<any>;
   errors: FieldErrors<FieldValues>;
-  form?: string;
+  formValue?: any;
+  onChange?: (value: any) => void;
   defaultValue?: any;
   onChangeMultiSelect?: (value: { value: string; label: string }[]) => void;
   valueMultiSelect?: { value: string; label: string }[];
@@ -27,6 +28,8 @@ type FormGeneratorProps = {
 const FormGenerator: React.FC<FormGeneratorProps> = ({
   field,
   register,
+  formValue,
+  onChange,
   defaultValue,
   onChangeMultiSelect,
   valueMultiSelect,
@@ -42,7 +45,6 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
           type="text"
           className="!h-12 shadow-none"
           disabled={disabled}
-          readOnly={disabled}
           placeholder={placeholder || label}
           defaultValue={defaultValue}
           {...register(name)}
@@ -54,7 +56,6 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
           type="number"
           className="!h-12 shadow-none placeholder:!text-muted-foreground"
           disabled={disabled}
-          readOnly={disabled}
           placeholder={placeholder || label}
           defaultValue={defaultValue}
           {...register(name)}
@@ -66,7 +67,6 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
           placeholder={placeholder || label}
           className=""
           disabled={disabled}
-          readOnly={disabled}
           rows={4}
           defaultValue={defaultValue}
           {...register(name)}
@@ -74,19 +74,22 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
       )}
       {fieldType === "select" && options && (
         <Select
-          defaultValue={defaultValue}
-          onValueChange={(value) =>
-            register(name).onChange({ target: { value } })
-          }
+          value={formValue || ""}
+          onValueChange={(value) => onChange?.(value)} // Trigger form's onChange
           disabled={disabled}
         >
           <SelectTrigger className="w-full !h-12 shadow-none">
             <SelectValue
               className="placeholder:text-muted-foreground"
-              placeholder={placeholder || label}
+              placeholder={placeholder || `Select ${label}`}
             />
           </SelectTrigger>
           <SelectContent>
+            {options.length === 0 && (
+              <p className="text-center text-sm text-muted-foreground leading-10">
+                No options found.
+              </p>
+            )}
             {options.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
@@ -105,10 +108,7 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
           badgeClassName="!bg-primary/10 shadow-none text-black !font-medium"
           className="w-full !min-h-12 max-h-12 truncate shadow-none"
           emptyIndicator={
-            <p
-              className="text-center text-sm leading-10
-             text-gray-600 dark:text-gray-400"
-            >
+            <p className="text-center text-sm text-muted-foreground leading-10">
               No options found.
             </p>
           }

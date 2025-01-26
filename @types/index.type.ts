@@ -27,7 +27,7 @@ export type FieldType = {
   value: string | string[];
   placeholder?: string;
   col?: number;
-  options?: { value: string; label: string }[];
+  options?: { key?: string; value: string; label: string }[];
   required?: boolean;
   disabled?: boolean;
 };

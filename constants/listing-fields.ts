@@ -1,5 +1,11 @@
 import { FieldType } from "@/@types/index.type";
-import { carBrands } from "./cars";
+import {
+  carBrands,
+  carConditions,
+  carFuelTypes,
+  carModels,
+  carYears,
+} from "./cars";
 
 export const addListingFields: FieldType[] = [
   {
@@ -13,35 +19,81 @@ export const addListingFields: FieldType[] = [
   },
   {
     name: "model",
-    fieldType: "text",
+    fieldType: "select",
     label: "Model",
     value: "",
     required: true,
     disabled: false,
+    options: carModels,
   },
   {
     name: "yearOfManufacture",
-    fieldType: "number",
+    fieldType: "select",
     label: "Year of Manufacture",
     value: "",
     required: true,
     disabled: false,
+    options: carYears,
   },
   {
     name: "exteriorColor",
-    fieldType: "text",
+    fieldType: "select",
     label: "Exterior Color",
     value: "",
     required: true,
     disabled: false,
+    options: [
+      {
+        value: "black",
+        label: "Black",
+      },
+      {
+        value: "white",
+        label: "White",
+      },
+      {
+        value: "red",
+        label: "Red",
+      },
+      {
+        value: "blue",
+        label: "Blue",
+      },
+      {
+        value: "gray",
+        label: "gray",
+      },
+    ],
   },
   {
     name: "interiorColor",
-    fieldType: "text",
+    fieldType: "select",
     label: "Interior Color",
     value: "",
     required: false,
     disabled: false,
+    options: [
+      {
+        value: "white",
+        label: "White",
+      },
+      {
+        value: "gray",
+        label: "gray",
+      },
+      {
+        value: "black",
+        label: "Black",
+      },
+      {
+        value: "red",
+        label: "Red",
+      },
+      {
+        value: "blue",
+        label: "Blue",
+      },
+    ],
   },
   {
     name: "condition",
@@ -50,10 +102,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: [
-      { value: "brandNew", label: "Brand New" },
-      { value: "used", label: "Used" },
-    ],
+    options: carConditions,
   },
   {
     name: "secondCondition",
@@ -107,12 +156,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: [
-      { value: "gasoline", label: "Gasoline" },
-      { value: "diesel", label: "Diesel" },
-      { value: "electric", label: "Electric" },
-      { value: "hybrid", label: "Hybrid" },
-    ],
+    options: carFuelTypes,
   },
   {
     name: "keyFeatures",

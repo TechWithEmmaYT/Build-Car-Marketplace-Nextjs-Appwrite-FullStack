@@ -115,12 +115,54 @@ export const carFeatures = {
 };
 
 export const carBrands = [
-  { value: "brandNew", label: "Brand New" },
+  {
+    value: "mercedes-benz",
+    label: "Mercedes Benz",
+  },
+  { value: "tesla", label: "Tesla" },
+  { value: "lexus", label: "Lexus" },
+  { value: "toyota", label: "Toyota" },
+  { value: "bmw", label: "BMW" },
+  { value: "ford", label: "Ford" },
+];
+
+export const carModels = [
+  { key: "mercedes-benz", value: "gle-class", label: "GLE-Class" },
+  { key: "mercedes-benz", value: "glk-class", label: "GLK-Class" },
+  { key: "mercedes-benz", value: "s-class", label: "S-Class" },
+  { key: "tesla", value: "model-s", label: "Model S" },
+  { key: "tesla", value: "model-3", label: "Model 3" },
+  { key: "tesla", value: "model-x", label: "Model X" },
+  { key: "lexus", value: "es300", label: "ES 300" },
+  { key: "lexus", value: "rx350", label: "RX 350" },
+  { key: "toyota", value: "camry", label: "Camry" },
+  { key: "toyota", value: "corolla", label: "Corolla" },
+  { key: "toyota", value: "camry-hybrid", label: "Camry Hybrid" },
+  { key: "bmw", value: "7-series", label: "7 Series" },
+  { key: "bmw", value: "x5", label: "X5" },
+  { key: "ford", value: "mustang", label: "Mustang" },
+  { key: "ford", value: "f-150", label: "F-150" },
+];
+
+export const carConditions = [
+  { value: "new", label: "Brand New" },
   { value: "used", label: "Used" },
 ];
 
-export const carModels = [];
+export const carFuelTypes = [
+  { value: "gasoline", label: "Gasoline" },
+  { value: "diesel", label: "Diesel" },
+  { value: "electric", label: "Electric" },
+  { value: "hybrid", label: "Hybrid" },
+];
 
-export const carYears = [];
-
-export const carColors = [];
+export const carYears = [
+  { value: "2016", label: "2016" },
+  { value: "2015", label: "2015" },
+  { value: "2013", label: "2013" },
+  { value: "2011", label: "2012" },
+  { value: "2010", label: "2010" },
+  { value: "2022", label: "2022" },
+  { value: "2023", label: "2023" },
+  { value: "2024", label: "2024" },
+];
