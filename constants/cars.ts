@@ -207,11 +207,9 @@ export const CAR_YEAR_OPTIONS = [
 
 export const CAR_YEAR_RANGE_OPTIONS = [
   { value: "2011-2013", label: "2011 - 2013" },
-  { value: "2013-2015", label: "2013 - 2015" },
-  { value: "2015-2016", label: "2015 - 2016" },
-  { value: "2016-2019", label: "2016 - 2019" },
+  { value: "2015-2017", label: "2015 - 2015" },
   { value: "2019-2020", label: "2019 - 2020" },
-  { value: "2020-2023", label: "2020 - 2023" },
+  { value: "2021-2023", label: "2021 - 2023" },
 ];
 
 export const CAR_PRICE_RANGE_OPTIONS = [

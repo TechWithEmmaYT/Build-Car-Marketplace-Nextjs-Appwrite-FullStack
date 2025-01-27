@@ -15,6 +15,21 @@ export const slugToCarName = (slug: string): string => {
   return carName;
 };
 
+export const formatCurrency = (
+  amount: number,
+  currency: string = "$"
+): string => {
+  return `${currency}${amount.toLocaleString()}`;
+};
+
+export const formatPriceRange = (
+  min: number,
+  max: number,
+  currency: string = "$"
+): string => {
+  return `${formatCurrency(min, currency)} - ${formatCurrency(max, currency)}`;
+};
+
 export const calculatePriceRange = () => {
   let minPrice = Infinity;
   let maxPrice = -Infinity;

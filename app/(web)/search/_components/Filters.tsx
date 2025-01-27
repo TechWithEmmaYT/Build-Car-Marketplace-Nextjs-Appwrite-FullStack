@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FilterAccordionItem from "@/components/FilterAccordionItem";
 import { Accordion } from "@/components/ui/accordion";
@@ -14,12 +14,39 @@ import {
   CAR_YEAR_RANGE_OPTIONS,
 } from "@/constants/cars";
 import useFilters from "@/hooks/use-filter";
-import { calculatePriceRange } from "@/lib/helper";
+import { calculatePriceRange, formatPriceRange } from "@/lib/helper";
+import useDebounce from "@/hooks/use-debounce";
 
 const Filters = () => {
   const { filters, updateFilter, clearFilters } = useFilters();
 
   const { minPrice, maxPrice } = calculatePriceRange();
+
+  const [sliderValues, setSliderValues] = useState<number[]>([
+    minPrice,
+    maxPrice,
+  ]);
+  const [isCustomSelected, setIsCustomSelected] = useState(false);
+  const debouncedSliderValues = useDebounce(sliderValues, 300);
+
+  React.useEffect(() => {
+    if (isCustomSelected) {
+      updateFilter("price", debouncedSliderValues.join("-"));
+    }
+  }, [debouncedSliderValues, isCustomSelected, updateFilter]);
+
+  const handlePriceRange = (values: number[]) => {
+    setSliderValues(values);
+    if (!isCustomSelected) setIsCustomSelected(true);
+  };
+
+  const handlePriceChange = (values: string | string[] | undefined) => {
+    if (isCustomSelected) {
+      setIsCustomSelected(false);
+      setSliderValues([minPrice, maxPrice]);
+    }
+    if (values) updateFilter("price", values);
+  };
 
   return (
     <div className="col-span-3 space-y-4">
@@ -79,7 +106,8 @@ const Filters = () => {
                 <div className="flex items-center justify-between mb-[5px]">
                   <h5 className="font-medium text-sm">Price</h5>
                   <span className="text-sm">
-                    ${minPrice} - ${maxPrice}
+                    {formatPriceRange(sliderValues[0], sliderValues[1])}{" "}
+                    {/* ${minPrice} - ${maxPrice} */}
                   </span>
                 </div>
                 <Slider
@@ -87,16 +115,13 @@ const Filters = () => {
                   max={maxPrice}
                   className="cursor-pointer"
                   defaultValue={[minPrice, maxPrice]}
-                  onValueChange={(values) => {
-                    updateFilter("price", values.join("-"));
-                  }}
+                  value={sliderValues} // Controlled slider
+                  onValueChange={handlePriceRange} // Update slider values
                 />
               </div>
             }
             selectedValues={filters.price}
-            onValuesChange={(values: any) => {
-              updateFilter("price", values);
-            }}
+            onValuesChange={handlePriceChange}
           />
 
           {/* Fuel Type */}
@@ -116,7 +141,7 @@ const Filters = () => {
             title="Models"
             value="model"
             filterType="checkbox"
-            diasbled={true}
+            diasbled={false}
             options={CAR_MODEL_OPTIONS}
             selectedValues={filters.model || []}
             onValuesChange={(values: any) => {
