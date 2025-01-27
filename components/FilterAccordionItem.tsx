@@ -12,11 +12,13 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dot } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FilterAccordionItemProps {
   title: string;
   value: string;
   filterType: "checkbox" | "radio" | "range" | "custom";
+  diasbled?: boolean;
   options?: any[]; // Define more specific type if possible
   selectedValues?: string[] | string | undefined;
   onValuesChange?: (values: string[] | string | undefined) => void;
@@ -24,6 +26,7 @@ interface FilterAccordionItemProps {
   hasClearButton?: boolean;
   minMaxInput?: boolean;
   children?: React.ReactNode;
+  renderCustom?: JSX.Element;
 }
 
 const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
@@ -35,10 +38,13 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
   onValuesChange,
   hasSearch = false,
   hasClearButton = false,
+  diasbled = false,
   children,
+  renderCustom,
 }) => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
+  const [isCustomSelected, setIsCustomSelected] = React.useState(false);
 
   React.useEffect(() => {
     if (hasSearch && options) {
@@ -50,6 +56,15 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
       setFilteredOptions(options);
     }
   }, [searchTerm, hasSearch]);
+
+  const handleRadioChange = (value: string) => {
+    if (value === "custom") {
+      setIsCustomSelected(true);
+    } else {
+      setIsCustomSelected(false);
+      onValuesChange?.(value);
+    }
+  };
 
   const handleClear = () => {
     if (onValuesChange) {
@@ -69,6 +84,7 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
         {hasSearch && (
           <div className="mb-2">
             <Input
+              disabled={diasbled}
               type="text"
               placeholder="Search..."
               value={searchTerm}
@@ -85,9 +101,17 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
           >
             <div className="space-y-2">
               {filteredOptions.map((option) => (
-                <label key={option.value} className="flex items-center">
+                <label
+                  key={option.value}
+                  className={cn(
+                    `flex items-center !cursor-pointer`,
+                    diasbled &&
+                      "pointer-events-none text-muted-foreground opacity-75"
+                  )}
+                >
                   <Checkbox
                     className="mr-2"
+                    disabled={diasbled}
                     checked={selectedValues?.includes(option.value)}
                     onCheckedChange={(checked) => {
                       if (onValuesChange) {
@@ -113,36 +137,53 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
         )}
         {filterType === "radio" && (
           <RadioGroup
+            className={cn(
+              "",
+              diasbled && "pointer-events-none text-muted-foreground opacity-75"
+            )}
+            disabled={diasbled}
             defaultValue={selectedValues as string}
-            onValueChange={(val) => onValuesChange && onValuesChange(val)}
+            onValueChange={handleRadioChange}
           >
             <div className="space-y-2 mb-2">
-              {filteredOptions.map((option) => (
-                <div key={option.label} className="flex items-center space-x-2">
-                  <RadioGroupItem
-                    value={option.label}
-                    id={`radio-item-${option.value}`}
-                  />
-                  <label
-                    htmlFor={`radio-item-${option.value}`}
-                    className="!text-sm font-normal flex items-center gap-[1px]"
+              {filteredOptions.map((option) => {
+                return (
+                  <div
+                    key={option.value}
+                    className="flex items-center space-x-2"
                   >
-                    {option.label}
-                    {option.adsCount && (
+                    <RadioGroupItem
+                      value={option.value}
+                      id={`radio-item-${option.value}`}
+                      checked={
+                        option.value ===
+                        (isCustomSelected ? "custom" : selectedValues)
+                      }
+                    />
+                    <label
+                      htmlFor={`radio-item-${option.value}`}
+                      className="!text-sm font-normal !cursor-pointer flex items-center gap-[1px]"
+                    >
+                      {option.label}
+                      {/* {option.adsCount && (
                       <span className="flex items-center gap-[1px] text-[#6c8ea0] ">
                         <Dot className="w-4 h-4" /> {option.adsCount} ads
                       </span>
-                    )}
-                  </label>
-                </div>
-              ))}
+                    )} */}
+                    </label>
+                  </div>
+                );
+              })}
+              {/* Render custom content if "Custom" is selected */}
+              {isCustomSelected && renderCustom}
             </div>
           </RadioGroup>
         )}
-        {filterType === "range" && children}{" "}
+
         {/* Render children for range or custom */}
         {filterType === "custom" && children}
-        {hasClearButton && selectedValues && (
+
+        {hasClearButton && (
           <div className="mt-2">
             <Button
               variant="ghost"

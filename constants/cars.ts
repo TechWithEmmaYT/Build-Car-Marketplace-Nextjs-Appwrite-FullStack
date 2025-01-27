@@ -114,7 +114,7 @@ export const carFeatures = {
   "Four-Wheel Drive (4WD)": true,
 };
 
-export const carBrands = [
+export const CAR_BRAND_OPTIONS = [
   {
     value: "mercedes-benz",
     label: "Mercedes Benz",
@@ -124,9 +124,12 @@ export const carBrands = [
   { value: "toyota", label: "Toyota" },
   { value: "bmw", label: "BMW" },
   { value: "ford", label: "Ford" },
+  { value: "tata", label: "Tata" },
+  { value: "audi", label: "Audi" },
+  { value: "hyundai", label: "Hyundai" },
 ];
 
-export const carModels = [
+export const CAR_MODEL_OPTIONS = [
   { key: "mercedes-benz", value: "gle-class", label: "GLE-Class" },
   { key: "mercedes-benz", value: "glk-class", label: "GLK-Class" },
   { key: "mercedes-benz", value: "s-class", label: "S-Class" },
@@ -142,27 +145,132 @@ export const carModels = [
   { key: "bmw", value: "x5", label: "X5" },
   { key: "ford", value: "mustang", label: "Mustang" },
   { key: "ford", value: "f-150", label: "F-150" },
+  { key: "tata", value: "nexon", label: "Nexon" },
+  { key: "tata", value: "harrier", label: "Harrier" },
+  { key: "audi", value: "a4", label: "A4" },
+  { key: "audi", value: "a6", label: "A6" },
+  { key: "hyundai", value: "accent", label: "Accent" },
+  { key: "hyundai", value: "venue", label: "Venue" },
 ];
 
-export const carConditions = [
+export const CAR_CONDITION_OPTIONS = [
   { value: "brand-new", label: "Brand New" },
   { value: "used", label: "Used" },
 ];
 
-export const carFuelTypes = [
+export const CAR_FUELTYPE_OPTIONS = [
   { value: "gasoline", label: "Gasoline" },
   { value: "diesel", label: "Diesel" },
   { value: "electric", label: "Electric" },
   { value: "hybrid", label: "Hybrid" },
 ];
 
-export const carYears = [
+export const CAR_TRANSMISSION_OPTIONS = [
+  { value: "automatic", label: "Automatic" },
+  { value: "manual", label: "Manual" },
+  { value: "cvt", label: "CVT" },
+  { value: "amt", label: "AMT" },
+];
+
+export const CAR_COLOR_OPTIONS = [
+  {
+    value: "white",
+    label: "White",
+  },
+  {
+    value: "gray",
+    label: "gray",
+  },
+  {
+    value: "black",
+    label: "Black",
+  },
+  {
+    value: "red",
+    label: "Red",
+  },
+  {
+    value: "blue",
+    label: "Blue",
+  },
+];
+
+export const CAR_YEAR_OPTIONS = [
+  { value: "2023", label: "2023" },
+  { value: "2020", label: "2020" },
+  { value: "2019", label: "2019" },
   { value: "2016", label: "2016" },
   { value: "2015", label: "2015" },
   { value: "2013", label: "2013" },
-  { value: "2011", label: "2012" },
-  { value: "2010", label: "2010" },
-  { value: "2022", label: "2022" },
-  { value: "2023", label: "2023" },
-  { value: "2024", label: "2024" },
+  { value: "2011", label: "2011" },
+];
+
+export const CAR_YEAR_RANGE_OPTIONS = [
+  { value: "2011-2013", label: "2011 - 2013" },
+  { value: "2013-2015", label: "2013 - 2015" },
+  { value: "2015-2016", label: "2015 - 2016" },
+  { value: "2016-2019", label: "2016 - 2019" },
+  { value: "2019-2020", label: "2019 - 2020" },
+  { value: "2020-2023", label: "2020 - 2023" },
+];
+
+export const CAR_PRICE_RANGE_OPTIONS = [
+  { value: "0-30000", label: "Under 30k" },
+  { value: "30000-50000", label: "30 - 50k" },
+  { value: "50000-100000", label: "50 - 100k" },
+  { value: "custom", label: "Custom" },
+];
+
+export const CAR_BODY_TYPE_OPTIONS = [
+  { value: "sedan", label: "Sedan" },
+  { value: "suv", label: "SUV" },
+  { value: "truck", label: "Truck" },
+  { value: "hatchback", label: "Hatchback" },
+  { value: "coupe", label: "Coupe" },
+  { value: "convertible", label: "Convertible" },
+  { value: "van", label: "Van/Minivan" },
+  { value: "wagon", label: "Wagon" },
+  { value: "other", label: "Other" },
+];
+
+export const CAR_SECOND_CONDITION_OPTIONS = [
+  { value: "afterCrash", label: "After Crash" },
+  { value: "engineIssue", label: "Engine Issue" },
+  { value: "gearIssue", label: "Gear Issue" },
+  { value: "needBodyRepair", label: "Needs Body Repair" },
+  { value: "needRepair", label: "Needs Repair" },
+  { value: "needRepainting", label: "Needs Repainting" },
+  { value: "tireDamage", label: "Tire Damage" },
+  { value: "glassDamage", label: "Glass Damage" },
+  { value: "electricalIssue", label: "Electrical Issue" },
+  { value: "suspensionIssue", label: "Suspension Issue" },
+  { value: "brakeIssue", label: "Brake Issue" },
+  { value: "interiorDamage", label: "Interior Damage" },
+  { value: "minorWearTear", label: "Minor Wear and Tear" },
+];
+
+export const CAR_KEY_FEATURES_OPTIONS = [
+  { value: "sunroof", label: "Sunroof/Moonroof" },
+  { value: "navigation", label: "Navigation System" },
+  { value: "leatherSeats", label: "Leather Seats" },
+  { value: "cooledSeats", label: "Cooled Seats (Ventilated)" },
+  { value: "powerSeats", label: "Power Seats" },
+  { value: "premiumSound", label: "Premium Sound System" },
+  { value: "alloyWheels", label: "Alloy Wheels" },
+  { value: "parkingSensors", label: "Parking Sensors" },
+  { value: "rearviewCamera", label: "Rearview Camera" },
+  { value: "360Camera", label: "360° Camera" },
+  { value: "adaptiveCruiseControl", label: "Adaptive Cruise Control" },
+  {
+    value: "automaticEmergencyBraking",
+    label: "Automatic Emergency Braking",
+  },
+  { value: "bluetooth", label: "Bluetooth Connectivity" },
+  { value: "appleCarplay", label: "Apple CarPlay" },
+  { value: "androidAuto", label: "Android Auto" },
+  { value: "keylessEntry", label: "Keyless Entry" },
+  { value: "pushButtonStart", label: "Push Button Start" },
+  { value: "remoteStart", label: "Remote Start" },
+  { value: "powerLocks", label: "Power Locks" },
+  { value: "airConditioning", label: "Air Conditioning" },
 ];

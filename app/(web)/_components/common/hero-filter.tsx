@@ -14,11 +14,12 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import {
-  carBrands,
-  carConditions,
-  carFuelTypes,
-  carModels,
-  carYears,
+  CAR_BRAND_OPTIONS,
+  CAR_CONDITION_OPTIONS,
+  CAR_FUELTYPE_OPTIONS,
+  CAR_MODEL_OPTIONS,
+  CAR_PRICE_RANGE_OPTIONS,
+  CAR_YEAR_OPTIONS,
 } from "@/constants/cars";
 
 interface FilterOption {
@@ -46,17 +47,12 @@ const HeroFilter = () => {
   }>({});
 
   const filterOptions: Record<string, FilterOption[]> = {
-    brands: carBrands,
-    condition: carConditions,
-    price: [
-      { label: "Under $10k", value: "<=10000" },
-      { label: "$10,000 - $20,000", value: "10000-20000" },
-      { label: "$20,000 - $30,000", value: "20000-30000" },
-      { label: "Over $30k", value: ">=300000" },
-    ],
-    models: carModels,
-    fuelTypes: carFuelTypes,
-    years: carYears,
+    brands: CAR_BRAND_OPTIONS,
+    condition: CAR_CONDITION_OPTIONS,
+    price: CAR_PRICE_RANGE_OPTIONS?.filter((item) => item.value !== "custom"),
+    models: CAR_MODEL_OPTIONS,
+    fuelTypes: CAR_FUELTYPE_OPTIONS,
+    years: CAR_YEAR_OPTIONS,
   };
 
   const handleFilterChange = (

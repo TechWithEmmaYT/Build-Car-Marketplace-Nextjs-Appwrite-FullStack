@@ -1,10 +1,15 @@
 import { FieldType } from "@/@types/index.type";
 import {
-  carBrands,
-  carConditions,
-  carFuelTypes,
-  carModels,
-  carYears,
+  CAR_BRAND_OPTIONS,
+  CAR_TRANSMISSION_OPTIONS,
+  CAR_CONDITION_OPTIONS,
+  CAR_COLOR_OPTIONS,
+  CAR_YEAR_OPTIONS,
+  CAR_MODEL_OPTIONS,
+  CAR_FUELTYPE_OPTIONS,
+  CAR_BODY_TYPE_OPTIONS,
+  CAR_SECOND_CONDITION_OPTIONS,
+  CAR_KEY_FEATURES_OPTIONS,
 } from "./cars";
 
 export const addListingFields: FieldType[] = [
@@ -15,7 +20,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: carBrands,
+    options: CAR_BRAND_OPTIONS,
   },
   {
     name: "model",
@@ -24,7 +29,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: carModels,
+    options: CAR_MODEL_OPTIONS,
   },
   {
     name: "yearOfManufacture",
@@ -33,7 +38,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: carYears,
+    options: CAR_YEAR_OPTIONS,
   },
   {
     name: "exteriorColor",
@@ -42,28 +47,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: [
-      {
-        value: "black",
-        label: "Black",
-      },
-      {
-        value: "white",
-        label: "White",
-      },
-      {
-        value: "red",
-        label: "Red",
-      },
-      {
-        value: "blue",
-        label: "Blue",
-      },
-      {
-        value: "gray",
-        label: "gray",
-      },
-    ],
+    options: CAR_COLOR_OPTIONS,
   },
   {
     name: "interiorColor",
@@ -72,28 +56,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: false,
     disabled: false,
-    options: [
-      {
-        value: "white",
-        label: "White",
-      },
-      {
-        value: "gray",
-        label: "gray",
-      },
-      {
-        value: "black",
-        label: "Black",
-      },
-      {
-        value: "red",
-        label: "Red",
-      },
-      {
-        value: "blue",
-        label: "Blue",
-      },
-    ],
+    options: CAR_COLOR_OPTIONS,
   },
   {
     name: "condition",
@@ -102,7 +65,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: carConditions,
+    options: CAR_CONDITION_OPTIONS,
   },
   {
     name: "secondCondition",
@@ -111,21 +74,7 @@ export const addListingFields: FieldType[] = [
     value: [],
     required: false,
     disabled: false,
-    options: [
-      { value: "afterCrash", label: "After Crash" },
-      { value: "engineIssue", label: "Engine Issue" },
-      { value: "gearIssue", label: "Gear Issue" },
-      { value: "needBodyRepair", label: "Needs Body Repair" },
-      { value: "needRepair", label: "Needs Repair" },
-      { value: "needRepainting", label: "Needs Repainting" },
-      { value: "tireDamage", label: "Tire Damage" },
-      { value: "glassDamage", label: "Glass Damage" },
-      { value: "electricalIssue", label: "Electrical Issue" },
-      { value: "suspensionIssue", label: "Suspension Issue" },
-      { value: "brakeIssue", label: "Brake Issue" },
-      { value: "interiorDamage", label: "Interior Damage" },
-      { value: "minorWearTear", label: "Minor Wear and Tear" },
-    ],
+    options: CAR_SECOND_CONDITION_OPTIONS,
   },
   {
     name: "mileage",
@@ -142,12 +91,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: [
-      { value: "automatic", label: "Automatic" },
-      { value: "manual", label: "Manual" },
-      { value: "cvt", label: "CVT" },
-      { value: "amt", label: "AMT" },
-    ],
+    options: CAR_TRANSMISSION_OPTIONS,
   },
   {
     name: "fuelType",
@@ -156,7 +100,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: carFuelTypes,
+    options: CAR_FUELTYPE_OPTIONS,
   },
   {
     name: "keyFeatures",
@@ -165,37 +109,7 @@ export const addListingFields: FieldType[] = [
     value: [],
     required: false,
     disabled: false,
-    options: [
-      { value: "sunroof", label: "Sunroof/Moonroof" },
-      { value: "navigation", label: "Navigation System" },
-      { value: "leatherSeats", label: "Leather Seats" },
-      { value: "heatedSeats", label: "Heated Seats" },
-      { value: "cooledSeats", label: "Cooled Seats (Ventilated)" },
-      { value: "powerSeats", label: "Power Seats" },
-      { value: "memorySeats", label: "Memory Seats" },
-      { value: "premiumSound", label: "Premium Sound System" },
-      { value: "alloyWheels", label: "Alloy Wheels" },
-      { value: "parkingSensors", label: "Parking Sensors" },
-      { value: "rearviewCamera", label: "Rearview Camera" },
-      { value: "360Camera", label: "360° Camera" },
-      { value: "blindSpotMonitor", label: "Blind Spot Monitor" },
-      { value: "laneDepartureWarning", label: "Lane Departure Warning" },
-      { value: "adaptiveCruiseControl", label: "Adaptive Cruise Control" },
-      {
-        value: "automaticEmergencyBraking",
-        label: "Automatic Emergency Braking",
-      },
-      { value: "bluetooth", label: "Bluetooth Connectivity" },
-      { value: "appleCarplay", label: "Apple CarPlay" },
-      { value: "androidAuto", label: "Android Auto" },
-      { value: "keylessEntry", label: "Keyless Entry" },
-      { value: "pushButtonStart", label: "Push Button Start" },
-      { value: "remoteStart", label: "Remote Start" },
-      { value: "powerWindows", label: "Power Windows" },
-      { value: "powerLocks", label: "Power Locks" },
-      { value: "airConditioning", label: "Air Conditioning" },
-      { value: "dualZoneClimateControl", label: "Dual-Zone Climate Control" },
-    ],
+    options: CAR_KEY_FEATURES_OPTIONS,
   },
 
   {
@@ -212,17 +126,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: false,
     disabled: false,
-    options: [
-      { value: "sedan", label: "Sedan" },
-      { value: "suv", label: "SUV" },
-      { value: "truck", label: "Truck" },
-      { value: "hatchback", label: "Hatchback" },
-      { value: "coupe", label: "Coupe" },
-      { value: "convertible", label: "Convertible" },
-      { value: "van", label: "Van/Minivan" },
-      { value: "wagon", label: "Wagon" },
-      { value: "other", label: "Other" },
-    ],
+    options: CAR_BODY_TYPE_OPTIONS,
   },
 
   {

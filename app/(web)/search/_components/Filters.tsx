@@ -1,99 +1,25 @@
 "use client";
 import React from "react";
-import { useQueryState } from "nuqs";
 import { Button } from "@/components/ui/button";
 import FilterAccordionItem from "@/components/FilterAccordionItem";
 import { Accordion } from "@/components/ui/accordion";
 import { Slider } from "@/components/ui/slider";
+import {
+  CAR_BRAND_OPTIONS,
+  CAR_CONDITION_OPTIONS,
+  CAR_FUELTYPE_OPTIONS,
+  CAR_COLOR_OPTIONS,
+  CAR_MODEL_OPTIONS,
+  CAR_PRICE_RANGE_OPTIONS,
+  CAR_YEAR_RANGE_OPTIONS,
+} from "@/constants/cars";
+import useFilters from "@/hooks/use-filter";
+import { calculatePriceRange } from "@/lib/helper";
 
 const Filters = () => {
-  const [brand] = useQueryState("brand");
-  const [model] = useQueryState("model");
-  const [fuelType] = useQueryState("fuelType");
-  const [year] = useQueryState("year");
-  const [price] = useQueryState("price");
-  const [carType] = useQueryState("carType");
+  const { filters, updateFilter, clearFilters } = useFilters();
 
-  const [isOpen, setIsOpen] = React.useState({
-    priceRange: true,
-    fuelType: true,
-    transmission: true,
-    condition: true,
-  });
-
-  const yearRanges = [
-    {
-      min: 2024,
-      max: 2028,
-      label: "2024 - 2028",
-      value: "2024-2028",
-      adsCount: 3,
-    }, // Added value and adsCount for example
-    {
-      min: 2019,
-      max: 2023,
-      label: "2019 - 2023",
-      value: "2019-2023",
-      adsCount: 5,
-    },
-    {
-      min: 2014,
-      max: 2018,
-      label: "2014 - 2018",
-      value: "2014-2018",
-      adsCount: 2,
-    },
-    {
-      min: 2009,
-      max: 2013,
-      label: "2009 - 2013",
-      value: "2009-2013",
-      adsCount: 7,
-    },
-    {
-      min: 2004,
-      max: 2008,
-      label: "2004 - 2008",
-      value: "2004-2008",
-      adsCount: 1,
-    },
-    {
-      min: 1999,
-      max: 2003,
-      label: "1999 - 2003",
-      value: "1999-2003",
-      adsCount: 4,
-    },
-  ];
-
-  const fuelTypeOptions = ["Petrol", "Diesel", "Electric", "Hybrid"].map(
-    (fuel) => ({ label: fuel, value: fuel.toLowerCase() })
-  );
-
-  const transmissionOptions = ["Automatic", "Manual"].map((trans) => ({
-    label: trans,
-    value: trans.toLowerCase(),
-  }));
-
-  const conditionOptions = ["Brand New", "Local Used"].map((cond) => ({
-    label: cond,
-    value: cond.toLowerCase(),
-  }));
-
-  const carBrandOptions = [
-    "BMW",
-    "Mercedes Benz",
-    "Audi",
-    "Toyota",
-    "Honda",
-    "Lexus",
-    "Porsche",
-    "Tesla",
-    "Ford",
-    "Volkswagen",
-  ].map((brand) => ({ label: brand, value: brand.toLowerCase() }));
-
-  console.log(brand, model, fuelType, year, price, carType);
+  const { minPrice, maxPrice } = calculatePriceRange();
 
   return (
     <div className="col-span-3 space-y-4">
@@ -108,6 +34,7 @@ const Filters = () => {
             <Button
               className="!h-auto text-white/80 font-light !py-0"
               variant="link"
+              onClick={clearFilters}
             >
               Reset all
             </Button>
@@ -118,9 +45,11 @@ const Filters = () => {
               title="Car Brands"
               value="brands"
               filterType="checkbox"
-              options={carBrandOptions}
-              selectedValues={[]}
-              onValuesChange={() => {}}
+              options={CAR_BRAND_OPTIONS}
+              selectedValues={filters.brand || []}
+              onValuesChange={(values: any) => {
+                updateFilter("brand", values);
+              }}
               hasSearch={true}
             />
           </Accordion>
@@ -131,8 +60,10 @@ const Filters = () => {
           defaultValue={[
             "price-range",
             "fuel-type",
-            "transmission",
             "condition",
+            "model",
+            "transmission",
+            "color",
             "year-of-manufacture",
           ]}
         >
@@ -140,32 +71,57 @@ const Filters = () => {
           <FilterAccordionItem
             title="Price Range"
             value="price-range"
-            filterType="range"
+            filterType="radio"
+            options={CAR_PRICE_RANGE_OPTIONS}
             hasClearButton={false}
-          >
-            <div className="py-2">
-              <Slider defaultValue={[33]} max={100} step={1} />
-            </div>
-          </FilterAccordionItem>
+            renderCustom={
+              <div className="py-1">
+                <div className="flex items-center justify-between mb-[5px]">
+                  <h5 className="font-medium text-sm">Price</h5>
+                  <span className="text-sm">
+                    ${minPrice} - ${maxPrice}
+                  </span>
+                </div>
+                <Slider
+                  min={minPrice}
+                  max={maxPrice}
+                  className="cursor-pointer"
+                  defaultValue={[minPrice, maxPrice]}
+                  onValueChange={(values) => {
+                    updateFilter("price", values.join("-"));
+                  }}
+                />
+              </div>
+            }
+            selectedValues={filters.price}
+            onValuesChange={(values: any) => {
+              updateFilter("price", values);
+            }}
+          />
 
           {/* Fuel Type */}
           <FilterAccordionItem
             title="Fuel Type"
             value="fuel-type"
             filterType="checkbox"
-            options={fuelTypeOptions}
-            selectedValues={[]}
-            onValuesChange={() => {}}
+            options={CAR_FUELTYPE_OPTIONS}
+            selectedValues={filters.fuelType || []}
+            onValuesChange={(values: any) => {
+              updateFilter("fuelType", values);
+            }}
           />
 
-          {/* Transmission */}
+          {/* Models */}
           <FilterAccordionItem
-            title="Transmission"
-            value="transmission"
+            title="Models"
+            value="model"
             filterType="checkbox"
-            options={transmissionOptions}
-            selectedValues={[]}
-            onValuesChange={() => {}}
+            diasbled={true}
+            options={CAR_MODEL_OPTIONS}
+            selectedValues={filters.model || []}
+            onValuesChange={(values: any) => {
+              updateFilter("model", values);
+            }}
           />
 
           {/* Condition */}
@@ -173,9 +129,23 @@ const Filters = () => {
             title="Condition"
             value="condition"
             filterType="checkbox"
-            options={conditionOptions}
-            selectedValues={[]}
-            onValuesChange={() => {}}
+            options={CAR_CONDITION_OPTIONS}
+            selectedValues={filters.condition || []}
+            onValuesChange={(values: any) => {
+              updateFilter("condition", values);
+            }}
+          />
+
+          {/* Color */}
+          <FilterAccordionItem
+            title="Color"
+            value="color"
+            filterType="checkbox"
+            options={CAR_COLOR_OPTIONS}
+            selectedValues={filters.color || []}
+            onValuesChange={(values: any) => {
+              updateFilter("color", values);
+            }}
           />
 
           {/* Years of Manufacture */}
@@ -183,11 +153,21 @@ const Filters = () => {
             title="Years of Manufacture"
             value="year-of-manufacture"
             filterType="radio"
-            options={yearRanges}
-            selectedValues={[]}
-            onValuesChange={() => {}}
+            options={CAR_YEAR_RANGE_OPTIONS}
+            selectedValues={
+              filters.yearMin && filters.yearMax
+                ? `${filters.yearMin}-${filters.yearMax}`
+                : ""
+            }
+            onValuesChange={(values: any) => {
+              const [min, max] =
+                typeof values === "string"
+                  ? values?.split("-")?.map(Number)
+                  : [null, null];
+              updateFilter("year_min", min);
+              updateFilter("year_max", max);
+            }}
             hasClearButton
-            minMaxInput
           />
         </Accordion>
       </div>

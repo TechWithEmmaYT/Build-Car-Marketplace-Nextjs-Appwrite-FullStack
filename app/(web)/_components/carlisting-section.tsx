@@ -1,42 +1,29 @@
 import React from "react";
 import CarCard from "@/components/CardCard";
-import { CarType, CategoryType } from "@/@types/index.type";
 import { Button } from "@/components/ui/button";
-import { cars } from "@/constants/cars";
+import { CAR_BRAND_OPTIONS, cars } from "@/constants/cars";
 
-const CATEGORIES: CategoryType[] = [
-  { id: "1", name: "All Brand", slug: "all-brand" },
-  { id: "2", name: "Coupe", slug: "coupe" },
-  { id: "3", name: "Hatchback", slug: "hatchback" },
-  { id: "4", name: "Sport", slug: "sport" },
-  { id: "5", name: "MPV", slug: "mpv" },
-  { id: "6", name: "SUV", slug: "suv" },
-  { id: "7", name: "Sedan", slug: "sedan" },
-  { id: "8", name: "Van", slug: "van" },
-  { id: "9", name: "Wagon", slug: "wagon" },
-];
+const BRANDS = [{ value: "all", label: "All Brand" }, ...CAR_BRAND_OPTIONS];
 
 const CarListing = () => {
-  const [activeCategory, setActiveCategory] = React.useState<CategoryType>(
-    CATEGORIES[0]
-  );
+  const [active, setActive] = React.useState(BRANDS[0]?.value);
 
   return (
     <div className="w-full pt-4 pb-14">
       <div className="w-full max-w-7xl mx-auto space-y-6">
         <div className="flex items-center gap-4 overflow-x-auto ">
-          {CATEGORIES.map((category) => (
+          {BRANDS.map((item, index) => (
             <button
-              key={category.id}
+              key={index}
               className={`text-gray-700 transition font-medium px-3 py-2 border-b-2 
                 ${
-                  activeCategory.id === category.id
+                  item.value === active
                     ? "border-black text-black"
                     : "border-transparent hover:border-black hover:text-black"
                 }`}
-              onClick={() => setActiveCategory(category)}
+              onClick={() => setActive(item.value)}
             >
-              {category.name}
+              {item.label}
             </button>
           ))}
         </div>
