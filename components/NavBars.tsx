@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import useRegister from "@/hooks/use-register-dialog";
 import useLogin from "@/hooks/use-login-dialog";
+import useDebounce from "@/hooks/use-debounce";
 
 const NavBar = () => {
   const router = useRouter();
@@ -26,6 +27,9 @@ const NavBar = () => {
 
   const user = 5;
 
+  const [searchKeyword, setSearchKeyword] = React.useState("");
+  const debouncedSearchKeyword = useDebounce(searchKeyword, 300);
+
   const handleSell = () => {
     if (!user) {
       onShow();
@@ -34,9 +38,17 @@ const NavBar = () => {
     router.push("/my-shop/add-listing");
   };
 
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    if (searchKeyword) {
+      router.push(`/search?q=${searchKeyword}`);
+    } else {
+      router.push("/search");
+    }
+  };
+
   const hideSearchPathname = ["/", "/my-shop/add-listing", "/my-shop/messages"];
   const hideNavPath = ["/my-shop", "/my-shop/add-listing", "/my-shop/messages"];
-
   return (
     <header
       className="w-full bg-primary sticky top-0 align-top z-10 h-14"
@@ -58,15 +70,19 @@ const NavBar = () => {
                 className="w-full max-w-[320px] h-10 bg-white rounded-lg
              relative"
               >
-                <div className="flex items-center justify-between">
-                  <Input
-                    type="text"
-                    className="flex-1 !shadow-none h-10 text-black
+                <form onSubmit={handleSearchSubmit}>
+                  <div className="flex items-center justify-between">
+                    <Input
+                      type="search"
+                      className="flex-1 !shadow-none h-10 text-black
                    !ring-0 !border-0"
-                    placeholder="Type your search here"
-                  />
-                  <Search className=" w-5 h-5 mr-2 text-gray-600" />
-                </div>
+                      placeholder="Type your search here"
+                      value={searchKeyword}
+                      onChange={(e) => setSearchKeyword(e.target.value)}
+                    />
+                    <Search className=" w-5 h-5 mr-2 text-gray-600" />
+                  </div>
+                </form>
               </div>
             )}
           </li>

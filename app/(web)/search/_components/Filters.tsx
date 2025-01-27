@@ -36,7 +36,10 @@ const Filters = () => {
   }, [debouncedSliderValues, isCustomSelected, updateFilter]);
 
   const handlePriceRange = (values: number[]) => {
-    setSliderValues(values);
+    // Ensure min is always less than or equal to max
+
+    const [min, max] = values[0] <= values[1] ? values : [values[1], values[0]];
+    setSliderValues([min, max]);
     if (!isCustomSelected) setIsCustomSelected(true);
   };
 
