@@ -22,7 +22,14 @@ export interface CarType {
 
 export type FieldType = {
   name: string;
-  fieldType: "text" | "number" | "select" | "textarea" | "multiselect";
+  fieldType:
+    | "text"
+    | "number"
+    | "select"
+    | "textarea"
+    | "multiselect"
+    | "currency"
+    | "phone";
   label: string;
   value: string | string[];
   placeholder?: string;

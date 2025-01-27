@@ -18,6 +18,15 @@ body {
   list-style: disc !important;
 }
 
+.phone--input {
+  button {
+    height: 100% !important;
+  }
+  input {
+    height: 100% !important;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

@@ -13,6 +13,7 @@ import {
 import { Textarea } from "./ui/textarea";
 import MultipleSelector from "./ui/multi-select";
 import { FieldType } from "@/@types/index.type";
+import { PhoneInput } from "./ui/phone-input";
 
 type FormGeneratorProps = {
   field: FieldType;
@@ -21,7 +22,6 @@ type FormGeneratorProps = {
   formValue?: any;
   onChange?: (value: any) => void;
   defaultValue?: any;
-  onChangeMultiSelect?: (value: { value: string; label: string }[]) => void;
   valueMultiSelect?: { value: string; label: string }[];
 };
 
@@ -31,7 +31,6 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
   formValue,
   onChange,
   defaultValue,
-  onChangeMultiSelect,
   valueMultiSelect,
 }) => {
   const { name, fieldType, label, disabled, placeholder, options } = field;
@@ -61,6 +60,47 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
           {...register(name)}
         />
       )}
+      {fieldType === "phone" && (
+        <PhoneInput
+          id={name}
+          className="phone--input !h-12"
+          autoComplete="off"
+          disabled={disabled}
+          placeholder={placeholder || label}
+          defaultValue={defaultValue}
+          onChange={(value) => {
+            onChange?.(value);
+          }}
+        />
+      )}
+      {fieldType === "currency" && (
+        <div className="relative">
+          <span
+            className="absolute inset-y-0 left-0 flex 
+          items-center pl-3 text-sm
+           text-gray-500 dark:text-gray-400"
+          >
+            $
+          </span>
+          <Input
+            id={name}
+            type="text"
+            className="!h-12 shadow-none placeholder:!text-muted-foreground pl-9"
+            placeholder={placeholder || label}
+            defaultValue={defaultValue}
+            {...register(name, {
+              onChange: (e) => {
+                const rawValue = e.target.value.replace(/\D/g, "");
+                const formattedValue = rawValue
+                  ? new Intl.NumberFormat().format(Number(rawValue))
+                  : "";
+                e.target.value = formattedValue;
+              },
+              setValueAs: (value) => value?.replace(/\D/g, ""),
+            })}
+          />
+        </div>
+      )}
       {fieldType === "textarea" && (
         <Textarea
           id={name}
@@ -75,14 +115,15 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
       {fieldType === "select" && options && (
         <Select
           value={formValue || ""}
-          onValueChange={(value) => onChange?.(value)} // Trigger form's onChange
-          disabled={disabled}
+          onValueChange={(value) => onChange?.(value)}
+          disabled={disabled || options?.length === 0}
         >
-          <SelectTrigger className="w-full !h-12 shadow-none">
-            <SelectValue
-              className="placeholder:text-muted-foreground"
-              placeholder={placeholder || `Select ${label}`}
-            />
+          <SelectTrigger
+            className="w-full !h-12 shadow-none
+          data-[placeholder]:text-muted-foreground
+          "
+          >
+            <SelectValue placeholder={placeholder || `Select ${label}`} />
           </SelectTrigger>
           <SelectContent>
             {options.length === 0 && (
@@ -102,11 +143,13 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
         <MultipleSelector
           options={options}
           placeholder={`Select ${label}`}
-          onChange={onChangeMultiSelect}
           disabled={disabled}
-          value={valueMultiSelect || []}
           badgeClassName="!bg-primary/10 shadow-none text-black !font-medium"
-          className="w-full !min-h-12 max-h-12 truncate shadow-none"
+          className="w-full !min-h-12 max-h-auto shadow-none"
+          value={valueMultiSelect || []}
+          onChange={(selectedItems) => {
+            onChange?.(selectedItems);
+          }}
           emptyIndicator={
             <p className="text-center text-sm text-muted-foreground leading-10">
               No options found.

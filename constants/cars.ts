@@ -145,7 +145,7 @@ export const carModels = [
 ];
 
 export const carConditions = [
-  { value: "new", label: "Brand New" },
+  { value: "brand-new", label: "Brand New" },
   { value: "used", label: "Used" },
 ];
 

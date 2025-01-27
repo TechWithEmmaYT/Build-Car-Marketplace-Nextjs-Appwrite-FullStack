@@ -258,28 +258,19 @@ export const addListingFields: FieldType[] = [
   },
   {
     name: "price",
-    fieldType: "number",
+    fieldType: "currency",
     label: "Price",
     value: "",
-    col: 2,
+    col: 1,
     required: true,
     disabled: false,
   },
-
-  {
-    name: "carTitle",
-    fieldType: "text",
-    label: "Car Title",
-    value: "",
-    required: false,
-    disabled: true,
-  },
   {
     name: "contactPhone",
-    fieldType: "text",
+    fieldType: "phone",
     label: "Contact Phone Number",
     value: "",
-    required: false,
+    required: true,
     disabled: false,
   },
 ];

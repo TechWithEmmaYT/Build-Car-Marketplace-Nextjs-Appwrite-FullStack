@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -17,17 +17,35 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { addListingFields } from "@/constants/listing-fields";
 import FormGenerator from "@/components/FormGenerator";
 import { Button } from "@/components/ui/button";
-import { carModels } from "@/constants/cars";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 const AddListing = () => {
-  const formSchema = z.object(
+  // Define schema for photos separately
+  const photosSchema = z.object({
+    photos: z
+      .array(z.string().url({ message: "Each photo must be a valid URL" }))
+      .min(3, { message: "At least 3 photo is required" }),
+  });
+
+  const dynamicFieldsSchema = z.object(
     addListingFields.reduce((schema, field) => {
-      let fieldSchema: z.ZodSchema = z.string().optional(); // Default to optional string
+      let fieldSchema: z.ZodSchema = z.string().optional();
       if (field.required) {
         if (field.fieldType === "number") {
           fieldSchema = z.string().trim();
+        } else if (field.fieldType === "phone") {
+          fieldSchema = z
+            .string({
+              required_error: `${field.label} is required`,
+            })
+            .refine(isValidPhoneNumber, { message: "Invalid phone number" });
         } else if (field.fieldType === "multiselect") {
-          fieldSchema = z.array(z.string());
+          fieldSchema = z.array(
+            z.object({
+              value: z.string(),
+              label: z.string(),
+            })
+          );
         } else if (field.fieldType === "select") {
           fieldSchema = z.string({
             required_error: `${field.label} is required`,
@@ -37,23 +55,36 @@ const AddListing = () => {
             .string({
               required_error: `${field.label} is required`,
             })
-            .min(1, { message: `${field.label} is required` }); // Required string
+            .min(1, { message: `${field.label} is required` });
         }
       } else {
         if (field.fieldType === "number") {
           fieldSchema = z.string().optional();
+        } else if (field.fieldType === "phone") {
+          fieldSchema = z
+            .string()
+            .refine(isValidPhoneNumber, { message: "Invalid phone number" })
+            .optional();
         } else if (field.fieldType === "multiselect") {
-          fieldSchema = z.array(z.string()).optional();
+          fieldSchema = z
+            .array(
+              z.object({
+                value: z.string(),
+                label: z.string(),
+              })
+            )
+            .optional();
         } else if (field.fieldType === "select") {
           fieldSchema = z.string().optional();
         }
       }
-
       schema[field.name] = fieldSchema;
       return schema;
     }, {} as Record<string, z.ZodSchema>)
   );
 
+  // Merge the two schemas
+  const formSchema = dynamicFieldsSchema.merge(photosSchema);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
@@ -61,13 +92,19 @@ const AddListing = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    const carTitle = `${values.brand?.split("-")?.join(" ")} ${values.model} ${
+      values.yearOfManufacture
+    } ${values.exteriorColor}`;
+    console.log(carTitle, values);
   }
 
   const handleImageUrls = (imageUrls: string[]) => {
+    form.setValue("photos", imageUrls);
     console.log("Uploaded files in AddListingPage:", imageUrls);
   };
-  console.log(form.getValues(), "values");
+
+  // console.log(form.getValues(), "values");
+  // console.log(form.formState.errors, "errors");
   return (
     <main className="container mx-auto px-4 pt-3 pb-8">
       <div className="max-w-4xl mx-auto pt-5">
@@ -122,6 +159,9 @@ const AddListing = () => {
                           <ScrollBar orientation="horizontal" />
                         </ScrollArea>
                       </div>
+                      <FormMessage>
+                        {form.formState.errors.photos?.message}
+                      </FormMessage>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 mt-4 gap-5">
@@ -158,6 +198,7 @@ const AddListing = () => {
                                     register={form.register}
                                     errors={form.formState.errors}
                                     formValue={formField.value}
+                                    valueMultiSelect={formField.value}
                                     onChange={formField.onChange}
                                   />
                                 </FormControl>
