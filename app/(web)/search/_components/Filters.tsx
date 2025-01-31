@@ -146,6 +146,7 @@ const Filters = () => {
             filterType="checkbox"
             diasbled={false}
             options={CAR_MODEL_OPTIONS}
+            hasSearch={true}
             selectedValues={filters.model || []}
             onValuesChange={(values: any) => {
               updateFilter("model", values);

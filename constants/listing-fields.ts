@@ -10,6 +10,7 @@ import {
   CAR_BODY_TYPE_OPTIONS,
   CAR_SECOND_CONDITION_OPTIONS,
   CAR_KEY_FEATURES_OPTIONS,
+  CAR_DRIVETRAIN_OPTIONS,
 } from "./cars";
 
 export const addListingFields: FieldType[] = [
@@ -136,12 +137,7 @@ export const addListingFields: FieldType[] = [
     value: "",
     required: true,
     disabled: false,
-    options: [
-      { value: "fwd", label: "Front-Wheel Drive (FWD)" },
-      { value: "rwd", label: "Rear-Wheel Drive (RWD)" },
-      { value: "awd", label: "All-Wheel Drive (AWD)" },
-      { value: "4wd", label: "Four-Wheel Drive (4WD)" },
-    ],
+    options: CAR_DRIVETRAIN_OPTIONS,
   },
   {
     name: "seatingCapacity",

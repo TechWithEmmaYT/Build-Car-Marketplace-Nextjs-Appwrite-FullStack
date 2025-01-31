@@ -154,22 +154,22 @@ export const CAR_MODEL_OPTIONS = [
 ];
 
 export const CAR_CONDITION_OPTIONS = [
-  { value: "brand-new", label: "Brand New" },
-  { value: "used", label: "Used" },
+  { value: "BRAND_NEW", label: "Brand New" },
+  { value: "USED", label: "Used" },
 ];
 
 export const CAR_FUELTYPE_OPTIONS = [
-  { value: "gasoline", label: "Gasoline" },
-  { value: "diesel", label: "Diesel" },
-  { value: "electric", label: "Electric" },
-  { value: "hybrid", label: "Hybrid" },
+  { value: "GASOLINE", label: "Gasoline" },
+  { value: "DIESEL", label: "Diesel" },
+  { value: "ELECTRIC", label: "Electric" },
+  { value: "HYBRID", label: "Hybrid" },
 ];
 
 export const CAR_TRANSMISSION_OPTIONS = [
-  { value: "automatic", label: "Automatic" },
-  { value: "manual", label: "Manual" },
-  { value: "cvt", label: "CVT" },
-  { value: "amt", label: "AMT" },
+  { value: "AUTOMATIC", label: "Automatic" },
+  { value: "MANUAL", label: "Manual" },
+  { value: "CVT", label: "CVT" },
+  { value: "AMT", label: "AMT" },
 ];
 
 export const CAR_COLOR_OPTIONS = [
@@ -231,6 +231,13 @@ export const CAR_BODY_TYPE_OPTIONS = [
   { value: "other", label: "Other" },
 ];
 
+export const CAR_DRIVETRAIN_OPTIONS = [
+  { value: "FWD", label: "Front-Wheel Drive (FWD)" },
+  { value: "RWD", label: "Rear-Wheel Drive (RWD)" },
+  { value: "AWD", label: "All-Wheel Drive (AWD)" },
+  { value: "4WD", label: "Four-Wheel Drive (4WD)" },
+];
+
 export const CAR_SECOND_CONDITION_OPTIONS = [
   { value: "afterCrash", label: "After Crash" },
   { value: "engineIssue", label: "Engine Issue" },
@@ -245,6 +252,7 @@ export const CAR_SECOND_CONDITION_OPTIONS = [
   { value: "brakeIssue", label: "Brake Issue" },
   { value: "interiorDamage", label: "Interior Damage" },
   { value: "minorWearTear", label: "Minor Wear and Tear" },
+  { value: "noFault", label: "No Fault" },
 ];
 
 export const CAR_KEY_FEATURES_OPTIONS = [

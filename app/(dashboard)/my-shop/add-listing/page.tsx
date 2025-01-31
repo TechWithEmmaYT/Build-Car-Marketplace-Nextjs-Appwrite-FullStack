@@ -17,101 +17,79 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { addListingFields } from "@/constants/listing-fields";
 import FormGenerator from "@/components/FormGenerator";
 import { Button } from "@/components/ui/button";
-import { isValidPhoneNumber } from "react-phone-number-input";
+import { addListingMutationFn } from "@/lib/fetcher";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
+import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { listingSchema } from "@/validation/listing.validation";
 
 const AddListing = () => {
-  // Define schema for photos separately
-  const photosSchema = z.object({
-    photos: z
-      .array(z.string().url({ message: "Each photo must be a valid URL" }))
-      .min(3, { message: "At least 3 photo is required" }),
+  const router = useRouter();
+  const { mutate, isPending } = useMutation({
+    mutationFn: addListingMutationFn,
   });
 
-  const dynamicFieldsSchema = z.object(
-    addListingFields.reduce((schema, field) => {
-      let fieldSchema: z.ZodSchema = z.string().optional();
-      if (field.required) {
-        if (field.fieldType === "number") {
-          fieldSchema = z.string().trim();
-        } else if (field.fieldType === "phone") {
-          fieldSchema = z
-            .string({
-              required_error: `${field.label} is required`,
-            })
-            .refine(isValidPhoneNumber, { message: "Invalid phone number" });
-        } else if (field.fieldType === "multiselect") {
-          fieldSchema = z.array(
-            z.object({
-              value: z.string(),
-              label: z.string(),
-            })
-          );
-        } else if (field.fieldType === "select") {
-          fieldSchema = z.string({
-            required_error: `${field.label} is required`,
-          });
-        } else {
-          fieldSchema = z
-            .string({
-              required_error: `${field.label} is required`,
-            })
-            .min(1, { message: `${field.label} is required` });
-        }
-      } else {
-        if (field.fieldType === "number") {
-          fieldSchema = z.string().optional();
-        } else if (field.fieldType === "phone") {
-          fieldSchema = z
-            .string()
-            .refine(isValidPhoneNumber, { message: "Invalid phone number" })
-            .optional();
-        } else if (field.fieldType === "multiselect") {
-          fieldSchema = z
-            .array(
-              z.object({
-                value: z.string(),
-                label: z.string(),
-              })
-            )
-            .optional();
-        } else if (field.fieldType === "select") {
-          fieldSchema = z.string().optional();
-        }
-      }
-      schema[field.name] = fieldSchema;
-      return schema;
-    }, {} as Record<string, z.ZodSchema>)
-  );
+  type FormDataType = z.infer<typeof listingSchema>;
+  type FormFieldName = keyof FormDataType;
 
-  // Merge the two schemas
-  const formSchema = dynamicFieldsSchema.merge(photosSchema);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormDataType>({
+    resolver: zodResolver(listingSchema),
     mode: "onBlur",
-    defaultValues: {},
+    defaultValues: {
+      brand: "",
+      model: "",
+      yearOfManufacture: "",
+      exteriorColor: "",
+      interiorColor: "",
+      condition: "",
+      secondCondition: [],
+      mileage: "",
+      transmission: "",
+      fuelType: "",
+      keyFeatures: [],
+      vin: "",
+      bodyType: "",
+      drivetrain: "",
+      seatingCapacity: "",
+      description: "",
+      price: 0,
+      contactPhone: "",
+      imageUrls: [],
+    },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const carTitle = `${values.brand?.split("-")?.join(" ")} ${values.model} ${
-      values.yearOfManufacture
-    } ${values.exteriorColor}`;
-    console.log(carTitle, values);
+  function onSubmit(values: FormDataType) {
+    console.log(form.getValues(), "values");
+    mutate(values, {
+      onSuccess: () => {
+        toast({
+          title: "Listing added successfully",
+          variant: "success",
+        });
+        router.push("/my-shop");
+      },
+      onError: (error) => {
+        toast({
+          title: "Something went wrong",
+          variant: "destructive",
+        });
+      },
+    });
   }
 
   const handleImageUrls = (imageUrls: string[]) => {
-    form.setValue("photos", imageUrls);
+    form.setValue("imageUrls", imageUrls);
     console.log("Uploaded files in AddListingPage:", imageUrls);
   };
 
-  // console.log(form.getValues(), "values");
-  // console.log(form.formState.errors, "errors");
   return (
     <main className="container mx-auto px-4 pt-3 pb-8">
       <div className="max-w-4xl mx-auto pt-5">
         <Card className="!bg-transparent shadow-none border-none">
           <CardHeader
             className="flex items-center justify-center
-           bg-white rounded-[8px] p-5 mb-3"
+           bg-white rounded-[8px] p-4 mb-4"
           >
             <CardTitle className="font-semibold text-xl">Add Listing</CardTitle>
           </CardHeader>
@@ -160,7 +138,7 @@ const AddListing = () => {
                         </ScrollArea>
                       </div>
                       <FormMessage>
-                        {form.formState.errors.photos?.message}
+                        {form.formState.errors.imageUrls?.message}
                       </FormMessage>
                     </div>
 
@@ -170,8 +148,8 @@ const AddListing = () => {
                         <FormField
                           key={index}
                           control={form.control}
-                          name={field.name}
-                          disabled={field.disabled}
+                          name={field.name as FormFieldName}
+                          disabled={field.disabled || isPending}
                           render={({ field: formField }) => {
                             const brand = form.getValues().brand;
                             const filteredModels =
@@ -180,6 +158,14 @@ const AddListing = () => {
                                     (model) => model.key === brand
                                   )
                                 : [];
+
+                            const valueMultiSelect =
+                              field.fieldType === "multiselect"
+                                ? Array.isArray(formField.value)
+                                  ? formField.value
+                                  : []
+                                : [];
+
                             return (
                               <FormItem
                                 className={`${
@@ -198,7 +184,7 @@ const AddListing = () => {
                                     register={form.register}
                                     errors={form.formState.errors}
                                     formValue={formField.value}
-                                    valueMultiSelect={formField.value}
+                                    valueMultiSelect={valueMultiSelect}
                                     onChange={formField.onChange}
                                   />
                                 </FormControl>
@@ -210,12 +196,42 @@ const AddListing = () => {
                       ))}
                     </div>
 
+                    {/* <Separator className="mt-5" />
+                    <div className="pt-5 w-full max-w-sm mx-auto">
+                      <h2 className="text-lg  mb-2 font-semibold text-[#28363e]">
+                        Listing Plans
+                      </h2>
+
+                      <div className="flex items-center justify-between">
+                        <div className="w-full flex flex-col gap-3 border-primary border-2 p-5 rounded-[8px]">
+                          <h5 className="text-base font-medium text-black">
+                            Free Listing
+                          </h5>
+                          <p className="text-sm text-[#6c8ea0]">
+                            Your listing will be listed forever and will be
+                            visible to all users
+                          </p>
+                          <Badge
+                            className="bg-primary/80 justify-center
+                             w-20 p-2 rounded-full border-1 border-primary
+                           !shadow-none text-white"
+                          >
+                            Forever
+                          </Badge>
+                        </div>
+                      </div>
+                    </div> */}
+
                     <Button
                       type="submit"
                       size="lg"
                       className="mt-6 py-6 mb-4 w-full max-w-xs 
                       flex place-items-center justify-self-center"
+                      disabled={isPending}
                     >
+                      {isPending && (
+                        <Loader className="w-4 h-4 mr-2 animate-spin" />
+                      )}
                       Post Listing
                     </Button>
                   </form>

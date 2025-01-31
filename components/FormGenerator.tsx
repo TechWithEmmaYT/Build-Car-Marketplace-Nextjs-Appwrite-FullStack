@@ -22,7 +22,7 @@ type FormGeneratorProps = {
   formValue?: any;
   onChange?: (value: any) => void;
   defaultValue?: any;
-  valueMultiSelect?: { value: string; label: string }[];
+  valueMultiSelect?: string[];
 };
 
 const FormGenerator: React.FC<FormGeneratorProps> = ({
@@ -34,6 +34,13 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
   valueMultiSelect,
 }) => {
   const { name, fieldType, label, disabled, placeholder, options } = field;
+
+  const getSelectedItems = (
+    options: { label: string; value: string }[],
+    valueMultiSelect: string[] = []
+  ) => {
+    return options.filter((option) => valueMultiSelect.includes(option.value));
+  };
 
   return (
     <div className="grid gap-2">
@@ -90,13 +97,21 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
             defaultValue={defaultValue}
             {...register(name, {
               onChange: (e) => {
-                const rawValue = e.target.value.replace(/\D/g, "");
+                const rawValue = e.target.value
+                  ? e.target.value.replace(/\D/g, "")
+                  : "";
                 const formattedValue = rawValue
                   ? new Intl.NumberFormat().format(Number(rawValue))
                   : "";
                 e.target.value = formattedValue;
               },
-              setValueAs: (value) => value?.replace(/\D/g, ""),
+              setValueAs: (value) => {
+                if (typeof value === "string" || typeof value === "number") {
+                  const cleanedValue = String(value).replace(/\D/g, "");
+                  return cleanedValue ? Number(cleanedValue) : null; // Return a number or null
+                }
+                return null;
+              },
             })}
           />
         </div>
@@ -146,9 +161,10 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
           disabled={disabled}
           badgeClassName="!bg-primary/10 shadow-none text-black !font-medium"
           className="w-full !min-h-12 max-h-auto shadow-none"
-          value={valueMultiSelect || []}
+          value={getSelectedItems(options, valueMultiSelect) || []}
           onChange={(selectedItems) => {
-            onChange?.(selectedItems);
+            const selectedValues = selectedItems.map((item) => item.value);
+            onChange?.(selectedValues);
           }}
           emptyIndicator={
             <p className="text-center text-sm text-muted-foreground leading-10">

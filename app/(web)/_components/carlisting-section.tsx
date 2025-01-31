@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import CarCard from "@/components/CardCard";
 import { Button } from "@/components/ui/button";

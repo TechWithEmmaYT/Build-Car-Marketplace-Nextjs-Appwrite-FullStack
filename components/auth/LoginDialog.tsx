@@ -23,13 +23,23 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { Loader } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import useLogin from "@/hooks/use-login-dialog";
 import useRegister from "@/hooks/use-register-dialog";
+import { loginMutationFn } from "@/lib/fetcher";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const LoginDialog = () => {
   const { open, onClose } = useLogin();
   const { onOpen } = useRegister();
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: loginMutationFn,
+  });
 
   const formSchema = z.object({
     email: z.string().email({
@@ -48,11 +58,28 @@ const LoginDialog = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    mutate(values, {
+      onSuccess: () => {
+        queryClient.resetQueries({
+          queryKey: ["currentUser"],
+        });
+        toast({
+          title: "Login Success",
+          description: "You have been logged in successfully",
+          variant: "success",
+        });
+        onClose();
+      },
+      onError: () => {
+        toast({
+          title: "Error Occurred",
+          description: "Login failed. Please try again.",
+          variant: "destructive",
+        });
+      },
+    });
+  };
 
   const handleClick = () => {
     onClose();
@@ -106,7 +133,14 @@ const LoginDialog = () => {
                 </FormItem>
               )}
             />
-            <Button size="lg" className="w-full" type="submit">
+
+            <Button
+              size="lg"
+              disabled={isPending}
+              className="w-full"
+              type="submit"
+            >
+              {isPending && <Loader className="w-4 h-4 animate-spin" />}
               Login
             </Button>
           </form>

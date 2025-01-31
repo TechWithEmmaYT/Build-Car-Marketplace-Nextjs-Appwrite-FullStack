@@ -3,16 +3,14 @@ import * as React from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import useSWRMutation from "swr/mutation";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -22,13 +20,23 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { Loader } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import useRegister from "@/hooks/use-register-dialog";
 import useLogin from "@/hooks/use-login-dialog";
+import { registerMutationFn } from "@/lib/fetcher";
+import { toast } from "@/hooks/use-toast";
 
 const RegisterDialog = () => {
   const { open, onClose } = useRegister();
   const { onOpen } = useLogin();
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: registerMutationFn,
+  });
 
   const formSchema = z.object({
     name: z.string().min(2, {
@@ -51,13 +59,31 @@ const RegisterDialog = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    mutate(values, {
+      onSuccess: () => {
+        queryClient.resetQueries({
+          queryKey: ["currentUser"],
+        });
+        toast({
+          title: "Registration Success",
+          description: "You have been registered successfully",
+          variant: "success",
+        });
+        onClose();
+      },
+      onError: () => {
+        toast({
+          title: "Error Occurred",
+          description: "Registration failed. Please try again.",
+          variant: "destructive",
+        });
+      },
+    });
+    onClose();
+  };
 
-  const handleClick = () => {
+  const openLoginDialog = () => {
     onClose();
     onOpen();
   };
@@ -90,6 +116,7 @@ const RegisterDialog = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="email"
@@ -108,6 +135,23 @@ const RegisterDialog = () => {
                 </FormItem>
               )}
             />
+            {/* <FormField
+              control={form.control}
+              name="businessName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Business Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Subcribe to TechWithEmma co."
+                      className="!h-10"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
             <FormField
               control={form.control}
               name="password"
@@ -126,7 +170,13 @@ const RegisterDialog = () => {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
+            <Button
+              size="lg"
+              disabled={isPending}
+              className="w-full"
+              type="submit"
+            >
+              {isPending && <Loader className="w-4 h-4 animate-spin" />}
               Register
             </Button>
           </form>
@@ -135,7 +185,7 @@ const RegisterDialog = () => {
         <div className="mt-2 flex items-center justify-center">
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <button onClick={handleClick} className="!text-primary">
+            <button onClick={openLoginDialog} className="!text-primary">
               Sign in
             </button>
           </p>

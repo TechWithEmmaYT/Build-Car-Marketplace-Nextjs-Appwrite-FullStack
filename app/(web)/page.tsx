@@ -1,4 +1,3 @@
-"use client";
 import CarListing from "./_components/carlisting-section";
 import HeroSection from "./_components/hero-section";
 

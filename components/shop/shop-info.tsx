@@ -1,8 +1,8 @@
 import React from "react";
+import { MessageSquareText } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../ui/button";
-import { MessageCircleMore, MessageSquareText } from "lucide-react";
 
 const ShopInfo = ({ isShopOwner = false }: { isShopOwner?: boolean }) => {
   return (

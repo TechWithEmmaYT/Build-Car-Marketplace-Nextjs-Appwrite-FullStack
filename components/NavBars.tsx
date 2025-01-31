@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useCallback } from "react";
 import Link from "next/link";
-import { MessageSquareText, Plus, Search } from "lucide-react";
+import { Loader, MessageSquareText, Plus, Search } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -17,18 +17,37 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import useRegister from "@/hooks/use-register-dialog";
 import useLogin from "@/hooks/use-login-dialog";
-import useDebounce from "@/hooks/use-debounce";
+import { logoutMutationFn } from "@/lib/fetcher";
+import { toast } from "@/hooks/use-toast";
+import useCurrentUser from "@/hooks/api/use-current-user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const NavBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { onOpen } = useRegister();
   const { onOpen: onShow } = useLogin();
-
-  const user = 5;
-
   const [searchKeyword, setSearchKeyword] = React.useState("");
-  const debouncedSearchKeyword = useDebounce(searchKeyword, 300);
+
+  const { data: user, isPending: isLoading } = useCurrentUser();
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: logoutMutationFn,
+    onSuccess: () => {
+      queryClient.resetQueries({
+        queryKey: ["currentUser"],
+      });
+      router.push("/");
+    },
+    onError: () => {
+      toast({
+        title: "Logout failed",
+        description: "Please try again ",
+      });
+    },
+  });
 
   const handleSell = () => {
     if (!user) {
@@ -47,6 +66,11 @@ const NavBar = () => {
     }
   };
 
+  const handleLogout = useCallback(async () => {
+    mutate();
+  }, [mutate]);
+
+  console.log(user);
   const hideSearchPathname = ["/", "/my-shop/add-listing", "/my-shop/messages"];
   const hideNavPath = ["/my-shop", "/my-shop/add-listing", "/my-shop/messages"];
   return (
@@ -86,6 +110,7 @@ const NavBar = () => {
               </div>
             )}
           </li>
+
           {!hideNavPath.includes(pathname) && (
             <>
               <li>
@@ -108,7 +133,9 @@ const NavBar = () => {
         </ul>
 
         <div className="ml-auto flex items-center space-x-4">
-          {!user ? (
+          {isLoading || isPending ? (
+            <Loader className="w-5 h-5 animate-spin text-white" />
+          ) : !user ? (
             <div className="flex items-center space-x-2">
               <button
                 onClick={onShow}
@@ -136,8 +163,10 @@ const NavBar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar role="button" className="h-9 w-9 shadow-sm ">
-                    <AvatarImage src="/avatars/01.png" alt="@shadcn" />
-                    <AvatarFallback className="text-sm">SC</AvatarFallback>
+                    <AvatarFallback className="text-sm uppercase">
+                      {user.name.charAt(0)}
+                      {user.name.charAt(1)}
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -148,7 +177,11 @@ const NavBar = () => {
                     My shop
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="!cursor-pointer">
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    disabled={isPending}
+                    className="!cursor-pointer"
+                  >
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
