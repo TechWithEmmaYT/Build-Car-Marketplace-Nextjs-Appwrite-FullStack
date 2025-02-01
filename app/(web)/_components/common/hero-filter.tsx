@@ -19,7 +19,7 @@ import {
   CAR_FUELTYPE_OPTIONS,
   CAR_MODEL_OPTIONS,
   CAR_PRICE_RANGE_OPTIONS,
-  CAR_YEAR_OPTIONS,
+  CAR_YEAR_RANGE_OPTIONS,
 } from "@/constants/cars";
 
 interface FilterOption {
@@ -42,7 +42,8 @@ const HeroFilter = () => {
     condition?: string;
     model?: string;
     fuelType?: string;
-    year?: string;
+    year_min?: string;
+    year_max?: string;
     price?: string;
   }>({});
 
@@ -52,7 +53,7 @@ const HeroFilter = () => {
     price: CAR_PRICE_RANGE_OPTIONS?.filter((item) => item.value !== "custom"),
     models: CAR_MODEL_OPTIONS,
     fuelTypes: CAR_FUELTYPE_OPTIONS,
-    years: CAR_YEAR_OPTIONS,
+    years: CAR_YEAR_RANGE_OPTIONS,
   };
 
   const handleFilterChange = (
@@ -101,7 +102,17 @@ const HeroFilter = () => {
             label="Year"
             options={filterOptions.years}
             placeholder="Year"
-            onChange={(value) => handleFilterChange("year", value)}
+            onChange={(value) => {
+              const [min, max] =
+                value === ""
+                  ? [0, 0]
+                  : value?.split("-")?.map(Number) || [null, null];
+              setSelectedFilters((prev) => ({
+                ...prev,
+                year_min: `${min}`,
+                year_max: `${max}`,
+              }));
+            }}
           />
           <FilterSelect
             label="Fuel"
@@ -121,7 +132,7 @@ const HeroFilter = () => {
           className="w-full lg:w-11/12 mx-auto flex items-center justify-between py-6"
         >
           <span className="flex items-center gap-1 font-light">
-            <b className="font-bold">1,000</b>
+            <b className="font-bold">1,000+</b>
             CAR LISTED
           </span>
           <span className="flex items-center gap-1 uppercase font-semibold">

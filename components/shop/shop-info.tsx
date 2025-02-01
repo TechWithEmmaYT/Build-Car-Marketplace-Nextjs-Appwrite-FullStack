@@ -1,10 +1,11 @@
 "use client";
 import React, { Fragment } from "react";
-import { Link, MessageSquareText } from "lucide-react";
+import { MessageSquareText } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
+import Link from "next/link";
 
 type ShopInfoProps = {
   shopId: string;
@@ -62,7 +63,7 @@ const ShopInfo = ({
                     <p className="text-sm text-gray-500">{shopName}</p>
                   </>
                 ) : (
-                  <h5 className="font-bold text-base">{shopName}</h5>
+                  <h5 className="font-bold text-base">{shopName} Shop</h5>
                 )}
               </div>
               <div className="mt-1">

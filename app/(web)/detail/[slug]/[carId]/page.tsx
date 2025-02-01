@@ -7,7 +7,7 @@ import { slugToCarName } from "@/lib/helper";
 import CarDetails from "./_components/car-details";
 import ShopInfo from "./_components/shop-info";
 import CarHeader from "./_components/car-header";
-import { getSingleListingMutationFn } from "@/lib/fetcher";
+import { getSingleListingQueryFn } from "@/lib/fetcher";
 import { useQuery } from "@tanstack/react-query";
 import { ListingType } from "@/@types/api.type";
 
@@ -15,9 +15,9 @@ const Details = ({ params }: { params: { slug: string; carId: string } }) => {
   const { slug, carId } = params;
   const carName = slugToCarName(slug);
 
-  const { data, isPending } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ["listing", carId],
-    queryFn: () => getSingleListingMutationFn(carId),
+    queryFn: () => getSingleListingQueryFn(carId),
   });
   const listing = data?.listing as ListingType;
 
@@ -26,7 +26,6 @@ const Details = ({ params }: { params: { slug: string; carId: string } }) => {
     { label: "Cars", href: "/search" },
     { label: carName },
   ];
-  console.log(listing);
 
   return (
     <main className="container mx-auto px-4 pt-3 pb-8">
@@ -42,16 +41,16 @@ const Details = ({ params }: { params: { slug: string; carId: string } }) => {
             fuelType={listing?.fuelType}
             transmission={listing?.transmission}
             mileage={listing?.mileage || "0"}
-            isPending={isPending}
+            isPending={isPending || isError}
           />
 
           <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] gap-5">
             <div className="pt-1">
               <CarCarousel
                 imageUrls={listing?.imageUrls}
-                isPending={isPending}
+                isPending={isPending || isError}
               />
-              <CarDetails listing={listing} isPending={isPending} />
+              <CarDetails listing={listing} isPending={isPending || isError} />
             </div>
             <div className="pt-0">
               <ShopInfo
@@ -59,7 +58,7 @@ const Details = ({ params }: { params: { slug: string; carId: string } }) => {
                 shopId={listing?.shop?.$id || ""}
                 shopName={listing?.shop?.shopName || ""}
                 description={listing?.shop?.description || ""}
-                isPending={isPending}
+                isPending={isPending || isError}
               />
             </div>
           </div>

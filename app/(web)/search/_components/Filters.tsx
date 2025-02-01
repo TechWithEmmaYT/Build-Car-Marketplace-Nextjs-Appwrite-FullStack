@@ -18,7 +18,7 @@ import { calculatePriceRange, formatPriceRange } from "@/lib/helper";
 import useDebounce from "@/hooks/use-debounce";
 
 const Filters = () => {
-  const { filters, updateFilter, clearFilters } = useFilters();
+  const { filters, updateFilter, clearFilters, clearFilter } = useFilters();
 
   const { minPrice, maxPrice } = calculatePriceRange();
 
@@ -27,7 +27,7 @@ const Filters = () => {
     maxPrice,
   ]);
   const [isCustomSelected, setIsCustomSelected] = useState(false);
-  const debouncedSliderValues = useDebounce(sliderValues, 300);
+  const debouncedSliderValues = useDebounce(sliderValues, 500);
 
   React.useEffect(() => {
     if (isCustomSelected) {
@@ -51,6 +51,12 @@ const Filters = () => {
     if (values) updateFilter("price", values);
   };
 
+  const handleClearAll = () => {
+    clearFilters();
+    updateFilter("price", "");
+    setSliderValues([minPrice, maxPrice]);
+  };
+
   return (
     <div className="col-span-3 space-y-4">
       <div className="">
@@ -64,7 +70,7 @@ const Filters = () => {
             <Button
               className="!h-auto text-white/80 font-light !py-0"
               variant="link"
-              onClick={clearFilters}
+              onClick={handleClearAll}
             >
               Reset all
             </Button>
@@ -190,11 +196,15 @@ const Filters = () => {
             }
             onValuesChange={(values: any) => {
               const [min, max] =
-                typeof values === "string"
-                  ? values?.split("-")?.map(Number)
-                  : [null, null];
-              updateFilter("year_min", min);
-              updateFilter("year_max", max);
+                values === ""
+                  ? [0, 0]
+                  : values?.split("-")?.map(Number) || [null, null];
+              updateFilter("year_min", !isNaN(min) ? min : null);
+              updateFilter("year_max", !isNaN(max) ? max : null);
+            }}
+            onClear={() => {
+              clearFilter("year_min");
+              clearFilter("year_max");
             }}
             hasClearButton
           />

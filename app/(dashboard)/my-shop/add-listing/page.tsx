@@ -118,7 +118,12 @@ const AddListing = () => {
       getLabel(exteriorColor, CAR_COLOR_OPTIONS),
     ].join(" ");
 
-    const payload = { ...values, displayTitle, shopId: shop?.$id };
+    const payload = {
+      ...values,
+      yearOfManufacture: Number(yearOfManufacture),
+      displayTitle,
+      shopId: shop?.$id,
+    };
 
     mutate(payload, {
       onSuccess: () => {

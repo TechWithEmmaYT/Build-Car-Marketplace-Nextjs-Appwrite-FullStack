@@ -20,7 +20,7 @@ export type ListingType = {
   $id?: string;
   brand: string;
   model: string;
-  yearOfManufacture: string;
+  yearOfManufacture: number;
   exteriorColor: string;
   interiorColor?: string;
   condition: string;
@@ -40,4 +40,14 @@ export type ListingType = {
   displayTitle: string;
   shopId: string;
   shop?: ShopType;
+};
+
+export type AllCarListingPayloadType = {
+  brand?: string[];
+  model?: string[];
+  color?: string[];
+  price?: string;
+  keyword?: string;
+  year_min?: number;
+  year_max?: number;
 };

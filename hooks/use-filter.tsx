@@ -15,7 +15,21 @@ type FilterKeys =
   | "price"
   | "carType"
   | "condition"
-  | "color";
+  | "color"
+  | "keyword";
+
+type FilterTypes = {
+  brand: string[];
+  model: string[];
+  fuelType: string[];
+  year_min: number;
+  year_max: number;
+  price: string;
+  carType: string[];
+  condition: string[];
+  color: string[];
+  keyword: string;
+};
 
 const useFilters = () => {
   // Initialize query states for all filters
@@ -59,6 +73,11 @@ const useFilters = () => {
     parseAsArrayOf(parseAsString).withDefault([])
   );
 
+  const [keyword, setKeyword] = useQueryState(
+    "keyword",
+    parseAsString.withDefault("")
+  );
+
   // Get all current filter values
   const getFilters = () => ({
     brand,
@@ -70,6 +89,7 @@ const useFilters = () => {
     carType,
     condition,
     color,
+    keyword,
   });
 
   // Update a specific filter (handles both arrays and single values)
@@ -96,9 +116,15 @@ const useFilters = () => {
         return setCondition(Array.isArray(values) ? values : null);
       case "color":
         return setColor(Array.isArray(values) ? values : null);
+      case "keyword":
+        return setPrice(typeof values === "string" ? values : null);
       default:
         throw new Error(`Invalid filter key: ${key}`);
     }
+  };
+
+  const clearFilter = (key: FilterKeys) => {
+    updateFilter(key, null);
   };
 
   // Clear all filters
@@ -113,6 +139,7 @@ const useFilters = () => {
       setCarType(null),
       setCondition(null),
       setColor(null),
+      setKeyword(null),
     ]);
   };
 
@@ -120,6 +147,7 @@ const useFilters = () => {
     filters: getFilters(),
     updateFilter,
     clearFilters,
+    clearFilter,
   };
 };
 

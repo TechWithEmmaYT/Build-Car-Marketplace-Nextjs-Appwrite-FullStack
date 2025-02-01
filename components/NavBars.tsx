@@ -59,9 +59,9 @@ const NavBar = () => {
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     if (searchKeyword) {
-      router.push(`/search?q=${searchKeyword}`);
+      router.push(`/search?keyword=${searchKeyword}`);
     } else {
       router.push("/search");
     }
@@ -71,7 +71,6 @@ const NavBar = () => {
     mutate();
   }, [mutate]);
 
-  console.log(user);
   const hideSearchPathname = ["/", "/my-shop/add-listing", "/my-shop/messages"];
   const hideNavPath = ["/my-shop", "/my-shop/add-listing", "/my-shop/messages"];
   return (

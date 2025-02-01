@@ -11,7 +11,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Dot } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FilterAccordionItemProps {
@@ -27,6 +26,7 @@ interface FilterAccordionItemProps {
   minMaxInput?: boolean;
   children?: React.ReactNode;
   renderCustom?: JSX.Element;
+  onClear?: () => void;
 }
 
 const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
@@ -41,6 +41,7 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
   diasbled = false,
   children,
   renderCustom,
+  onClear,
 }) => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filteredOptions, setFilteredOptions] = React.useState(options);
@@ -61,15 +62,13 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
     if (value === "custom") {
       setIsCustomSelected(true);
     } else {
-      setIsCustomSelected(false);
-      onValuesChange?.(value);
     }
+    setIsCustomSelected(false);
+    onValuesChange?.(value);
   };
 
   const handleClear = () => {
-    if (onValuesChange) {
-      onValuesChange(undefined);
-    }
+    onClear?.();
   };
 
   return (
@@ -142,36 +141,26 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
               diasbled && "pointer-events-none text-muted-foreground opacity-75"
             )}
             disabled={diasbled}
-            defaultValue={selectedValues as string}
+            value={selectedValues as string}
             onValueChange={handleRadioChange}
           >
             <div className="space-y-2 mb-2">
               {filteredOptions.map((option) => {
                 return (
-                  <div
+                  <label
                     key={option.value}
-                    className="flex items-center space-x-2"
+                    htmlFor={`radio-item-${option.value}`}
+                    className="flex items-center gap-2
+                     text-sm font-normal cursor-pointer"
                   >
                     <RadioGroupItem
                       value={option.value}
                       id={`radio-item-${option.value}`}
-                      checked={
-                        option.value ===
-                        (isCustomSelected ? "custom" : selectedValues)
-                      }
+                      checked={option.value === selectedValues}
+                      className="text-primary"
                     />
-                    <label
-                      htmlFor={`radio-item-${option.value}`}
-                      className="!text-sm font-normal !cursor-pointer flex items-center gap-[1px]"
-                    >
-                      {option.label}
-                      {/* {option.adsCount && (
-                      <span className="flex items-center gap-[1px] text-[#6c8ea0] ">
-                        <Dot className="w-4 h-4" /> {option.adsCount} ads
-                      </span>
-                    )} */}
-                    </label>
-                  </div>
+                    <span className="flex-1">{option.label}</span>
+                  </label>
                 );
               })}
               {/* Render custom content if "Custom" is selected */}

@@ -3,18 +3,16 @@ import React from "react";
 import AllListing from "@/components/shop/all-isting";
 import ShopInfo from "@/components/shop/shop-info";
 import { useQuery } from "@tanstack/react-query";
-import { getMyShopMutationFn } from "@/lib/fetcher";
+import { getMyShopQueryFn } from "@/lib/fetcher";
 import { ListingType } from "@/@types/api.type";
 
 const MyShop = () => {
   const { data: shopData, isPending } = useQuery({
     queryKey: ["my-shop"],
-    queryFn: getMyShopMutationFn,
+    queryFn: getMyShopQueryFn,
   });
   const user = shopData?.user;
   const listings = shopData?.listings || ([] as ListingType[]);
-
-  console.log(shopData);
 
   return (
     <main className="container mx-auto px-4 pt-3 pb-8">

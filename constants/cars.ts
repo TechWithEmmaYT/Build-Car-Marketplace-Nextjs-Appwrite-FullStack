@@ -199,7 +199,7 @@ export const CAR_YEAR_OPTIONS = [
   { value: "2023", label: "2023" },
   { value: "2020", label: "2020" },
   { value: "2019", label: "2019" },
-  { value: "2016", label: "2016" },
+  { value: "2017", label: "2017" },
   { value: "2015", label: "2015" },
   { value: "2013", label: "2013" },
   { value: "2011", label: "2011" },
@@ -207,15 +207,17 @@ export const CAR_YEAR_OPTIONS = [
 
 export const CAR_YEAR_RANGE_OPTIONS = [
   { value: "2011-2013", label: "2011 - 2013" },
-  { value: "2015-2017", label: "2015 - 2015" },
+  { value: "2015-2017", label: "2015 - 2017" },
   { value: "2019-2020", label: "2019 - 2020" },
   { value: "2021-2023", label: "2021 - 2023" },
 ];
 
 export const CAR_PRICE_RANGE_OPTIONS = [
-  { value: "0-30000", label: "Under 30k" },
-  { value: "30000-50000", label: "30 - 50k" },
+  { value: "0-50000", label: "Under 50k" },
   { value: "50000-100000", label: "50 - 100k" },
+  { value: "100000-300000", label: "100 - 300k" },
+  { value: "300000-500000", label: "300 - 500k" },
+  { value: "500000-1000000", label: "500 - 1M" },
   { value: "custom", label: "Custom" },
 ];
 
