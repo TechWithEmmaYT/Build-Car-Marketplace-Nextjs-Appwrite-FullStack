@@ -1,14 +1,23 @@
 import React from "react";
 import { Skeleton } from "../ui/skeleton";
 
-export const CarListingSkeleton = ({ layout }: { layout: "list" | "grid" }) => {
+export const CarListingSkeleton = ({
+  layout,
+  className,
+}: {
+  layout: "list" | "grid";
+  className?: string;
+}) => {
   return (
     <div
-      className={`w-full grid ${
-        layout === "list"
-          ? "grid-cols-1 gap-4"
-          : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      }`}
+      className={
+        className ||
+        `w-full grid ${
+          layout === "list"
+            ? "grid-cols-1 gap-4"
+            : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        }`
+      }
     >
       {Array.from({ length: 5 }).map((_, index) => (
         <div key={index} className="w-full">

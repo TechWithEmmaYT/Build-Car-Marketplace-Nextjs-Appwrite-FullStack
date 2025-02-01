@@ -62,9 +62,9 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
     if (value === "custom") {
       setIsCustomSelected(true);
     } else {
+      setIsCustomSelected(false);
+      onValuesChange?.(value);
     }
-    setIsCustomSelected(false);
-    onValuesChange?.(value);
   };
 
   const handleClear = () => {
@@ -156,7 +156,10 @@ const FilterAccordionItemComponent: React.FC<FilterAccordionItemProps> = ({
                     <RadioGroupItem
                       value={option.value}
                       id={`radio-item-${option.value}`}
-                      checked={option.value === selectedValues}
+                      checked={
+                        option.value ===
+                        (isCustomSelected ? "custom" : selectedValues)
+                      }
                       className="text-primary"
                     />
                     <span className="flex-1">{option.label}</span>
