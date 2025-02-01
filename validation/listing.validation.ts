@@ -12,7 +12,6 @@ import {
   CAR_BODY_TYPE_OPTIONS,
   CAR_DRIVETRAIN_OPTIONS,
 } from "@/constants/cars";
-import { isValidPhoneNumber } from "react-phone-number-input";
 
 const createEnum = (options: { value: string }[], fieldName: string) => {
   const values = options.map((item) => item.value);
@@ -65,10 +64,17 @@ export const listingSchema = z.object({
   seatingCapacity: z.string().optional(),
   description: z.string().optional(),
   price: z.number().min(1, "Price is required"),
+  imageUrls: z.array(z.string()).min(3, "At least 3 images required"),
+});
+
+export const listingBackendSchema = listingSchema.extend({
+  shopId: z.string({ required_error: "Shop ID is required" }).min(1),
+  displayTitle: z
+    .string({ required_error: "Display title is required" })
+    .min(1, "Display title is required"),
   contactPhone: z
     .string({
       required_error: "Contact number is required",
     })
-    .refine(isValidPhoneNumber, "Invalid phone number"),
-  imageUrls: z.array(z.string()).min(3, "At least 3 images required"),
+    .min(1, "Contact number is required"),
 });

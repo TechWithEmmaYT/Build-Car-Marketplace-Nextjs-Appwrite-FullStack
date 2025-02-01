@@ -15,10 +15,7 @@ export const slugToCarName = (slug: string): string => {
   return carName;
 };
 
-export const formatCurrency = (
-  amount: number,
-  currency: string = "$"
-): string => {
+export const formatPrice = (amount: number, currency: string = "$"): string => {
   return `${currency}${amount.toLocaleString()}`;
 };
 
@@ -27,7 +24,7 @@ export const formatPriceRange = (
   max: number,
   currency: string = "$"
 ): string => {
-  return `${formatCurrency(min, currency)} - ${formatCurrency(max, currency)}`;
+  return `${formatPrice(min, currency)} - ${formatPrice(max, currency)}`;
 };
 
 export const calculatePriceRange = () => {
@@ -45,4 +42,19 @@ export const calculatePriceRange = () => {
     minPrice: minPrice === Infinity ? 0 : minPrice,
     maxPrice: maxPrice === -Infinity ? 100000 : maxPrice,
   };
+};
+
+export const formatCurrency = (
+  amount: number,
+  options: Intl.NumberFormatOptions = {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }
+): string => {
+  if (typeof amount !== "number" || isNaN(amount)) {
+    return "$0"; // Fallback for invalid amounts
+  }
+  return amount.toLocaleString("en-US", options);
 };

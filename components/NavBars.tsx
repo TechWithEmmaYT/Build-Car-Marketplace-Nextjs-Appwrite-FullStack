@@ -19,8 +19,8 @@ import useRegister from "@/hooks/use-register-dialog";
 import useLogin from "@/hooks/use-login-dialog";
 import { logoutMutationFn } from "@/lib/fetcher";
 import { toast } from "@/hooks/use-toast";
-import useCurrentUser from "@/hooks/api/use-current-user";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useCurrentUser from "@/hooks/api/use-current-user";
 
 const NavBar = () => {
   const router = useRouter();
@@ -29,7 +29,8 @@ const NavBar = () => {
   const { onOpen: onShow } = useLogin();
   const [searchKeyword, setSearchKeyword] = React.useState("");
 
-  const { data: user, isPending: isLoading } = useCurrentUser();
+  const { data: userData, isPending: isLoading } = useCurrentUser();
+  const user = userData?.user;
 
   const queryClient = useQueryClient();
 

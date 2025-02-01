@@ -1,5 +1,5 @@
 import "server-only";
-import { Client, Account, Databases } from "node-appwrite";
+import { Client, Account, Databases, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE_NAME } from "@/constants/server";
 import { APP_CONFIG } from "./app-config";
@@ -13,6 +13,9 @@ export async function createAdminClient() {
   return {
     get account() {
       return new Account(client);
+    },
+    get databases() {
+      return new Databases(client);
     },
   };
 }
@@ -32,6 +35,20 @@ export async function createSessionClient() {
     get account() {
       return new Account(client);
     },
+    get databases() {
+      return new Databases(client);
+    },
+    get storages() {
+      return new Storage(client);
+    },
+  };
+}
+
+export async function createAnonymousClient() {
+  const client = new Client()
+    .setEndpoint(APP_CONFIG.APPWRITE.ENDPOINT)
+    .setProject(APP_CONFIG.APPWRITE.PROJECT_ID);
+  return {
     get databases() {
       return new Databases(client);
     },

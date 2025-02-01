@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
-import Image from "next/image";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,21 +19,40 @@ import { Button } from "@/components/ui/button";
 import { addListingMutationFn } from "@/lib/fetcher";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
-import { Loader } from "lucide-react";
+import { Loader, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { listingSchema } from "@/validation/listing.validation";
+import useCurrentUser from "@/hooks/api/use-current-user";
+import { isValidPhoneNumber } from "react-phone-number-input";
+import {
+  CAR_BRAND_OPTIONS,
+  CAR_COLOR_OPTIONS,
+  CAR_MODEL_OPTIONS,
+  CAR_YEAR_OPTIONS,
+} from "@/constants/cars";
 
 const AddListing = () => {
   const router = useRouter();
+  const { data } = useCurrentUser();
+  const shop = data?.shop;
+
   const { mutate, isPending } = useMutation({
     mutationFn: addListingMutationFn,
   });
 
-  type FormDataType = z.infer<typeof listingSchema>;
+  const listingClientSchema = listingSchema.extend({
+    contactPhone: z
+      .string({
+        required_error: "Contact number is required",
+      })
+      .refine(isValidPhoneNumber, "Invalid phone number"),
+  });
+
+  type FormDataType = z.infer<typeof listingClientSchema>;
   type FormFieldName = keyof FormDataType;
 
   const form = useForm<FormDataType>({
-    resolver: zodResolver(listingSchema),
+    resolver: zodResolver(listingClientSchema),
     mode: "onBlur",
     defaultValues: {
       brand: "",
@@ -59,12 +77,54 @@ const AddListing = () => {
     },
   });
 
+  console.log(shop, "shop");
+
+  // Watch the imageUrls field for changes
+  const imageUrls = useWatch({
+    control: form.control,
+    name: "imageUrls",
+  });
+
+  const brand = useWatch({
+    control: form.control,
+    name: "brand",
+  });
+
+  const handleImageUrls = (imageUrls: string[]) => {
+    console.log("Uploaded files in AddListingPage:", imageUrls);
+    form.setValue("imageUrls", [...form.getValues().imageUrls, ...imageUrls]);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const updatedImageUrls = [...form.getValues().imageUrls];
+    updatedImageUrls.splice(index, 1);
+    form.setValue("imageUrls", updatedImageUrls);
+  };
+
+  const getLabel = (
+    value: string,
+    options: { value: string; label: string }[]
+  ) => {
+    const option = options.find((opt) => opt.value === value);
+    return option ? option.label : value;
+  };
+
   function onSubmit(values: FormDataType) {
-    console.log(form.getValues(), "values");
-    mutate(values, {
+    const { brand, model, yearOfManufacture, exteriorColor } = values;
+    const displayTitle = [
+      getLabel(brand, CAR_BRAND_OPTIONS),
+      getLabel(model, CAR_MODEL_OPTIONS),
+      getLabel(yearOfManufacture, CAR_YEAR_OPTIONS),
+      getLabel(exteriorColor, CAR_COLOR_OPTIONS),
+    ].join(" ");
+
+    const payload = { ...values, displayTitle, shopId: shop?.$id };
+
+    mutate(payload, {
       onSuccess: () => {
         toast({
           title: "Listing added successfully",
+          description: "Your listing is now live on the platform",
           variant: "success",
         });
         router.push("/my-shop");
@@ -72,16 +132,12 @@ const AddListing = () => {
       onError: (error) => {
         toast({
           title: "Something went wrong",
+          description: error.message,
           variant: "destructive",
         });
       },
     });
   }
-
-  const handleImageUrls = (imageUrls: string[]) => {
-    form.setValue("imageUrls", imageUrls);
-    console.log("Uploaded files in AddListingPage:", imageUrls);
-  };
 
   return (
     <main className="container mx-auto px-4 pt-3 pb-8">
@@ -91,7 +147,7 @@ const AddListing = () => {
             className="flex items-center justify-center
            bg-white rounded-[8px] p-4 mb-4"
           >
-            <CardTitle className="font-semibold text-xl">Add Listing</CardTitle>
+            <CardTitle className="font-semibold text-xl">Add Car</CardTitle>
           </CardHeader>
 
           <CardContent className="bg-white rounded-[8px] p-4 px-6 pb-8">
@@ -114,28 +170,36 @@ const AddListing = () => {
                         <span>You can sell all of the photos here</span>
                       </div>
                       <div className="flex items-center justify-start">
-                        <FileUploader onImageUrlsReceived={handleImageUrls} />
-                        <ScrollArea className="w-96 whitespace-nowrap ml-3">
-                          <div className="flex w-max space-x-4 items-center h-20">
-                            {[0, 1].map((_, index) => (
-                              <div
-                                key={index}
-                                className={`relative overflow-hidden
+                        <FileUploader onImageUrlsReceived={handleImageUrls}>
+                          <ScrollArea className="w-96 whitespace-nowrap ml-3">
+                            <div className="flex w-max space-x-4 items-center h-20">
+                              {imageUrls.map((imageUrl, index) => (
+                                <div
+                                  key={index}
+                                  className={`relative overflow-hidden
                                  w-20 h-20 rounded-[8px] bg-[#e5f6e8]`}
-                              >
-                                <Image
-                                  src="/images/benz.webp"
-                                  alt="benz"
-                                  width={80}
-                                  height={80}
-                                  className="spect-square
+                                >
+                                  <img
+                                    src={imageUrl}
+                                    alt=""
+                                    width={80}
+                                    height={80}
+                                    className="spect-square
                                     w-full h-full rounded-[8px] object-cover"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
+                                  />
+                                  <button
+                                    onClick={() => handleRemoveImage(index)} // Add your remove logic here
+                                    className="absolute top-0 right-0 p-1
+                                     bg-black rounded-full"
+                                  >
+                                    <X className="w-4 h-4 text-gray-600" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                            <ScrollBar orientation="horizontal" />
+                          </ScrollArea>
+                        </FileUploader>
                       </div>
                       <FormMessage>
                         {form.formState.errors.imageUrls?.message}
@@ -151,11 +215,10 @@ const AddListing = () => {
                           name={field.name as FormFieldName}
                           disabled={field.disabled || isPending}
                           render={({ field: formField }) => {
-                            const brand = form.getValues().brand;
                             const filteredModels =
                               field.name === "model" && brand
                                 ? field?.options?.filter(
-                                    (model) => model.key === brand
+                                    (model: any) => model.key === brand
                                   )
                                 : [];
 

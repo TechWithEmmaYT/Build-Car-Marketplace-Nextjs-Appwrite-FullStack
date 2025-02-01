@@ -10,8 +10,15 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { CameraIcon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const CarCarousel = () => {
+const CarCarousel = ({
+  imageUrls = [],
+  isPending,
+}: {
+  imageUrls: string[];
+  isPending: boolean;
+}) => {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -36,10 +43,8 @@ const CarCarousel = () => {
     });
   }, [api]);
 
-  const images = Array.from({ length: 7 }, (_, i) => `/images/benz.webp`);
-
-  const visibleThumbnails = images.slice(0, 5);
-  const remainingThumbnailsCount = Math.max(0, images.length - 5);
+  const visibleThumbnails = imageUrls?.slice(0, 5);
+  const remainingThumbnailsCount = Math.max(0, imageUrls?.length - 5);
 
   return (
     <div className="w-full h-auto">
@@ -53,54 +58,60 @@ const CarCarousel = () => {
        before:bg-[#00b53f] before:z-0"
         style={{}}
       >
-        <Carousel className="b-carousel-slider" setApi={setApi}>
-          <CarouselContent className="!p-0">
-            {images.map((_, index) => (
-              <CarouselItem className="!p-0 h-full" key={index}>
-                <div
-                  className="relative rounded-lg 
+        {isPending ? (
+          <div>
+            <Skeleton className=" rounded-b-none  h-[300px] md:h-[450px] lg:h-[620px] w-full" />
+          </div>
+        ) : (
+          <Carousel className="b-carousel-slider" setApi={setApi}>
+            <CarouselContent className="!p-0">
+              {imageUrls?.map((imageUrl, index) => (
+                <CarouselItem className="!p-0 h-full" key={index}>
+                  <div
+                    className="relative rounded-lg 
                 h-[300px] md:h-[450px] lg:h-[620px]"
-                >
-                  <Image
-                    aria-hidden
-                    src={"/images/benz.webp"}
-                    className="w-full h-full !rounded-tl-lg 
+                  >
+                    <Image
+                      aria-hidden
+                      src={imageUrl}
+                      className="w-full h-full !rounded-tl-lg 
                     !rounded-tr-lg object-cover"
-                    width={800}
-                    height={620}
-                    priority
-                    alt=""
-                    style={{
-                      boxShadow: "0 7px 14.8px 3.2px #0207010a",
-                    }}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div
-            className="b-carousel-counter
+                      width={800}
+                      height={620}
+                      priority
+                      alt=""
+                      style={{
+                        boxShadow: "0 7px 14.8px 3.2px #0207010a",
+                      }}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div
+              className="b-carousel-counter
                   absolute bottom-[20px]
                   left-[30px] flex
                   justify-center
                   items-center bg-[#0006]
                   rounded-[4px] text-[#f2f2f2]
                   text-[14px] p-[4px_11px] gap-1"
-          >
-            <CameraIcon className="!w-4 !h-4" />
-            <div>
-              {current}/{count}
+            >
+              <CameraIcon className="!w-4 !h-4" />
+              <div>
+                {current}/{count}
+              </div>
             </div>
-          </div>
-          <CarouselPrevious
-            className="carousel--navigation left-2 md:left-8
+            <CarouselPrevious
+              className="carousel--navigation left-2 md:left-8
            !bg-transparent !border-0 text-white !p-0"
-          />
-          <CarouselNext
-            className="carousel--navigation right-2 md:right-8 
+            />
+            <CarouselNext
+              className="carousel--navigation right-2 md:right-8 
           !bg-transparent !border-0 text-white !p-0"
-          />
-        </Carousel>
+            />
+          </Carousel>
+        )}
 
         <div
           className="b-carousel-thumbnails relative 
@@ -111,7 +122,7 @@ const CarCarousel = () => {
                   md:-mr-5 flex items-center 
           justify-between md:justify-start"
           >
-            {visibleThumbnails.map((_, index) => (
+            {visibleThumbnails?.map((imageUrl, index) => (
               <button
                 key={index}
                 className={`w-[calc(50%-4px)] sm:w-[calc(33%-4px)] md:w-[20%] 
@@ -130,7 +141,7 @@ const CarCarousel = () => {
                 }}
               >
                 <Image
-                  src={"/images/benz.webp"}
+                  src={imageUrl}
                   className="!w-full !h-full object-cover"
                   width={185}
                   height={185}

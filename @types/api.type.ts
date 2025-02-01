@@ -9,7 +9,8 @@ export type RegisterType = {
   name: string;
 };
 
-export type AddListingType = {
+export type ListingType = {
+  $id?: string;
   brand: string;
   model: string;
   yearOfManufacture: string;
@@ -29,4 +30,6 @@ export type AddListingType = {
   price: number;
   contactPhone: string;
   imageUrls: string[];
+  displayTitle: string;
+  shopId: string;
 };

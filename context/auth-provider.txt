@@ -4,12 +4,20 @@ import useCurrentUser from "@/hooks/api/use-current-user";
 import React, { createContext, useContext } from "react";
 
 type UserType = {
+  $id: string;
   name: string;
   email: string;
 };
 
+type ShopType = {
+  $id: string;
+  shopName: string;
+  userId: string;
+};
+
 type AuthContextType = {
   user?: UserType;
+  shop?: ShopType;
   error: any;
   isPending: boolean;
   isFetching: boolean;
@@ -21,17 +29,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const {
-    data: user,
-    error,
-    isPending,
-    isFetching,
-    refetch,
-  } = useCurrentUser();
+  const { data, error, isPending, isFetching, refetch } = useCurrentUser();
+  const user = data?.user;
+  const shop = data?.shop;
 
   return (
     <AuthContext.Provider
-      value={{ user, error, isFetching, isPending, refetch }}
+      value={{ user, shop, error, isFetching, isPending, refetch }}
     >
       {children}
     </AuthContext.Provider>

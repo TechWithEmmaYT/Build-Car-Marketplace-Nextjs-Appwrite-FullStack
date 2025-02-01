@@ -1,6 +1,6 @@
-import NavBar from "@/components/NavBars";
-import { getLoggedInUser } from "@/lib/appwrite";
 import { redirect } from "next/navigation";
+import { getLoggedInUser } from "@/lib/appwrite";
+import NavBar from "@/components/NavBars";
 
 export default async function DashboardLayout({
   children,

@@ -3,7 +3,6 @@ import * as React from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import useSWRMutation from "swr/mutation";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,6 +26,7 @@ import useRegister from "@/hooks/use-register-dialog";
 import useLogin from "@/hooks/use-login-dialog";
 import { registerMutationFn } from "@/lib/fetcher";
 import { toast } from "@/hooks/use-toast";
+import { signupSchema } from "@/validation/auth.validation";
 
 const RegisterDialog = () => {
   const { open, onClose } = useRegister();
@@ -38,28 +38,18 @@ const RegisterDialog = () => {
     mutationFn: registerMutationFn,
   });
 
-  const formSchema = z.object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    email: z.string().email({
-      message: "Please enter a valid email address.",
-    }),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  //Imported from validation/auth.validation.ts
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       name: "",
       email: "",
+      shopName: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof signupSchema>) => {
     mutate(values, {
       onSuccess: () => {
         queryClient.resetQueries({
@@ -70,6 +60,7 @@ const RegisterDialog = () => {
           description: "You have been registered successfully",
           variant: "success",
         });
+        form.reset();
         onClose();
       },
       onError: () => {
@@ -80,7 +71,6 @@ const RegisterDialog = () => {
         });
       },
     });
-    onClose();
   };
 
   const openLoginDialog = () => {
@@ -135,12 +125,12 @@ const RegisterDialog = () => {
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
-              name="businessName"
+              name="shopName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Business Name</FormLabel>
+                  <FormLabel>Shop Name</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Subcribe to TechWithEmma co."
@@ -151,7 +141,7 @@ const RegisterDialog = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
             <FormField
               control={form.control}
               name="password"

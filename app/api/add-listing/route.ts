@@ -2,19 +2,30 @@ import { NextResponse } from "next/server";
 import { ID } from "node-appwrite";
 import { createSessionClient } from "@/lib/appwrite";
 import { APP_CONFIG } from "@/lib/app-config";
-import { listingSchema } from "@/validation/listing.validation";
+import { listingBackendSchema } from "@/validation/listing.validation";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const validatedData = listingSchema.parse(body);
+    const validatedData = listingBackendSchema.parse(body);
 
-    const displayTitle = `${validatedData.brand?.split("-")?.join(" ")} ${
-      validatedData.model
-    } ${validatedData.yearOfManufacture} ${validatedData.exteriorColor}`;
+    const { shopId } = validatedData;
 
     const { account, databases } = await createSessionClient();
     const user = await account.get();
+
+    const shop = await databases.getDocument(
+      APP_CONFIG.APPWRITE.DATABASE_ID,
+      APP_CONFIG.APPWRITE.SHOP_ID,
+      shopId
+    );
+
+    if (!shop || shop.userId !== user.$id) {
+      return NextResponse.json(
+        { error: "Invalid or unauthorized shopId" },
+        { status: 400 }
+      );
+    }
 
     const carListing = await databases.createDocument(
       APP_CONFIG.APPWRITE.DATABASE_ID,
@@ -22,8 +33,8 @@ export async function POST(request: Request) {
       ID.unique(),
       {
         ...validatedData,
-        displayTitle,
         userId: user.$id,
+        shopId,
       }
     );
     return NextResponse.json({
@@ -31,6 +42,7 @@ export async function POST(request: Request) {
       data: carListing,
     });
   } catch (error: any) {
+    console.log(error, "error");
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
