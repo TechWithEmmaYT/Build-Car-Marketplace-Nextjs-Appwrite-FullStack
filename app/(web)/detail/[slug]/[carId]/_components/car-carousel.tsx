@@ -113,19 +113,35 @@ const CarCarousel = ({
           </Carousel>
         )}
 
+        {/* {Thumbnails} */}
+
         <div
           className="b-carousel-thumbnails relative 
-        w-full flex overflow-hidden"
+      w-full flex overflow-hidden"
         >
-          <div
-            className="-ml-1 md:-ml-5 -mr-1 
+          {isPending ? (
+            <div
+              className="w-full flex gap-2 items-center 
+          justify-between md:justify-start"
+            >
+              {Array.from({ length: 5 }).map((_, index) => (
+                <Skeleton
+                  key={index}
+                  className="w-[calc(50%-4px)] sm:w-[calc(33%-4px)] md:w-[35%] 
+                    h-auto aspect-square m-1 mx-0"
+                />
+              ))}
+            </div>
+          ) : (
+            <div
+              className="-ml-1 md:-ml-5 -mr-1 
                   md:-mr-5 flex items-center 
           justify-between md:justify-start"
-          >
-            {visibleThumbnails?.map((imageUrl, index) => (
-              <button
-                key={index}
-                className={`w-[calc(50%-4px)] sm:w-[calc(33%-4px)] md:w-[20%] 
+            >
+              {visibleThumbnails?.map((imageUrl, index) => (
+                <button
+                  key={index}
+                  className={`w-[calc(50%-4px)] sm:w-[calc(33%-4px)] md:w-[20%] 
                     h-auto aspect-square relative 
                     m-1 md:m-2 mx-1 overflow-hidden
                  bg-[#f6f6f6]
@@ -135,38 +151,39 @@ const CarCarousel = ({
                      : "hover:opacity-80 transition-opacity"
                  }
                  `}
-                onClick={() => {
-                  api?.scrollTo(index);
-                  setActiveThumbnailIndex(index);
-                }}
-              >
-                <Image
-                  src={imageUrl}
-                  className="!w-full !h-full object-cover"
-                  width={185}
-                  height={185}
-                  priority
-                  alt=""
-                />
-                {index === 4 && remainingThumbnailsCount > 0 && (
-                  <div
-                    className="absolute inset-0 bg-black/50
+                  onClick={() => {
+                    api?.scrollTo(index);
+                    setActiveThumbnailIndex(index);
+                  }}
+                >
+                  <Image
+                    src={imageUrl}
+                    className="!w-full !h-full object-cover"
+                    width={185}
+                    height={185}
+                    priority
+                    alt=""
+                  />
+                  {index === 4 && remainingThumbnailsCount > 0 && (
+                    <div
+                      className="absolute inset-0 bg-black/50
                    rounded-lg flex flex-col justify-center
                    items-center text-white text-sm
                     font-medium leading-[2px]"
-                  >
-                    <p>
-                      +{" "}
-                      <span className="!text-4xl">
-                        {remainingThumbnailsCount}
-                      </span>
-                    </p>
-                    <p>images</p>
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
+                    >
+                      <p>
+                        +{" "}
+                        <span className="!text-4xl">
+                          {remainingThumbnailsCount}
+                        </span>
+                      </p>
+                      <p>images</p>
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

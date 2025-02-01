@@ -9,6 +9,13 @@ export type RegisterType = {
   name: string;
 };
 
+export type ShopType = {
+  $id?: string;
+  shopName: string;
+  description: string;
+  userId: string;
+};
+
 export type ListingType = {
   $id?: string;
   brand: string;
@@ -32,4 +39,5 @@ export type ListingType = {
   imageUrls: string[];
   displayTitle: string;
   shopId: string;
+  shop?: ShopType;
 };

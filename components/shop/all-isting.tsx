@@ -63,7 +63,7 @@ const AllListing = ({
                   </div>
                 </div>
               ))
-            : listings.map((listing) => (
+            : listings?.map((listing) => (
                 <CarCard key={listing.$id} listing={listing} layout={layout} />
               ))}
         </div>

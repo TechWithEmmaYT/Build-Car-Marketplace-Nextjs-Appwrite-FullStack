@@ -5,7 +5,7 @@ import NavBreadCrumb from "@/components/NavBreadCrumb";
 import CarCarousel from "./_components/car-carousel";
 import { slugToCarName } from "@/lib/helper";
 import CarDetails from "./_components/car-details";
-import SellerInfo from "./_components/seller-info";
+import ShopInfo from "./_components/shop-info";
 import CarHeader from "./_components/car-header";
 import { getSingleListingMutationFn } from "@/lib/fetcher";
 import { useQuery } from "@tanstack/react-query";
@@ -54,7 +54,13 @@ const Details = ({ params }: { params: { slug: string; carId: string } }) => {
               <CarDetails listing={listing} isPending={isPending} />
             </div>
             <div className="pt-0">
-              <SellerInfo />
+              <ShopInfo
+                price={listing?.price}
+                shopId={listing?.shop?.$id || ""}
+                shopName={listing?.shop?.shopName || ""}
+                description={listing?.shop?.description || ""}
+                isPending={isPending}
+              />
             </div>
           </div>
         </div>
