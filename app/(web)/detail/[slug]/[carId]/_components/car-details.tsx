@@ -1,20 +1,35 @@
+import { ListingType } from "@/@types/api.type";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { carFeatures } from "@/constants/cars";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CAR_BRAND_OPTIONS, CAR_KEY_FEATURES_OPTIONS } from "@/constants/cars";
 import {
   CheckSquare,
   CogIcon,
   FuelIcon,
   GaugeIcon,
   MessageSquareText,
-  Radio,
   TagIcon,
-  X,
 } from "lucide-react";
 import React from "react";
 
-const CarDetails = () => {
+const CarDetails = ({
+  listing,
+  isPending,
+}: {
+  listing: ListingType;
+  isPending: boolean;
+}) => {
+  const getSelectedItems = (
+    values: string[] = [],
+    options: { label: string; value: string }[]
+  ) => {
+    return options?.filter((option) => values?.includes(option.value));
+  };
+
+  const brand = getSelectedItems([listing?.brand || ""], CAR_BRAND_OPTIONS)?.[0]
+    ?.label;
   return (
     <div className="w-full h-auto pt-2">
       <Card className="!rounded-t-none rounded-b-[8px] shadow-custom">
@@ -22,40 +37,73 @@ const CarDetails = () => {
           {/* {Descritpion} */}
           <div className="mb-4">
             <h2 className="font-bold text-lg mb-2">Description</h2>
-            <div>
-              <p className="text-sm font-light">
-                This car is a stunning example of automotive excellence,
-                blending luxury, performance, and style in one remarkable
-                package. With its sleek lines and powerful engine, it's sure to
-                turn heads wherever you go. This vehicle has been meticulously
-                maintained and is in excellent condition, ready for its next
-                owner to enjoy.
-              </p>
+            <div className="text-sm font-light">
+              {isPending ? (
+                <Skeleton className="h-4 w-2/3" />
+              ) : (
+                listing?.description
+              )}
             </div>
             <ul className="my-4 flex items-center font-light gap-5">
-              <li className="flex flex-col items-center text-sm gap-2">
-                <span className="border-2 rounded-full p-3">
-                  <FuelIcon className="size-5" />
-                </span>
-                Petrol
+              <li className="flex flex-col capitalize items-center text-sm gap-2">
+                {isPending ? (
+                  <>
+                    <Skeleton className="w-[47px] h-[47px] rounded-full" />
+                    <Skeleton className="h-3 w-10" />
+                  </>
+                ) : (
+                  <>
+                    <span className="border-2 rounded-full p-3">
+                      <FuelIcon className="size-5" />
+                    </span>
+                    {listing?.fuelType?.toLowerCase()}
+                  </>
+                )}
+              </li>
+              <li className="flex flex-col capitalize items-center text-sm gap-2">
+                {isPending ? (
+                  <>
+                    <Skeleton className="w-[47px] h-[47px] rounded-full" />
+                    <Skeleton className="h-3 w-10" />
+                  </>
+                ) : (
+                  <>
+                    <span className="border-2 rounded-full p-3">
+                      <GaugeIcon className="size-5" />
+                    </span>
+                    {listing?.mileage}
+                  </>
+                )}
               </li>
               <li className="flex flex-col items-center text-sm gap-2">
-                <span className="border-2 rounded-full p-3">
-                  <GaugeIcon className="size-5" />
-                </span>
-                Speed
+                {isPending ? (
+                  <>
+                    <Skeleton className="w-[47px] h-[47px] rounded-full" />
+                    <Skeleton className="h-3 w-10" />
+                  </>
+                ) : (
+                  <>
+                    <span className="border-2 rounded-full p-3">
+                      <CogIcon className="size-5" />
+                    </span>
+                    {listing?.transmission?.toLowerCase()}
+                  </>
+                )}
               </li>
-              <li className="flex flex-col items-center text-sm gap-2">
-                <span className="border-2 rounded-full p-3">
-                  <CogIcon className="size-5" />
-                </span>
-                Automatic
-              </li>
-              <li className="flex flex-col items-center text-sm gap-2">
-                <span className="border-2 rounded-full p-3">
-                  <TagIcon className="size-5" />
-                </span>
-                New
+              <li className="flex flex-col capitalize items-center text-sm gap-2">
+                {isPending ? (
+                  <>
+                    <Skeleton className="w-[47px] h-[47px] rounded-full" />
+                    <Skeleton className="h-3 w-10" />
+                  </>
+                ) : (
+                  <>
+                    <span className="border-2 rounded-full p-3">
+                      <TagIcon className="size-5" />
+                    </span>
+                    {listing?.condition?.toLowerCase()}
+                  </>
+                )}
               </li>
             </ul>
           </div>
@@ -70,7 +118,7 @@ const CarDetails = () => {
                 >
                   Brand
                 </h5>
-                <p className="text-sm">Mercedes-Benz</p>
+                <p className="text-sm">{brand}</p>
               </li>
               <li>
                 <h5
@@ -79,16 +127,7 @@ const CarDetails = () => {
                 >
                   Model
                 </h5>
-                <p className="text-sm">S-Class</p>
-              </li>
-              <li>
-                <h5
-                  className="uppercase text-xs
-                 text-muted-foreground mb-[1px]"
-                >
-                  Conditon
-                </h5>
-                <p className="text-sm">No fault</p>
+                <p className="text-sm">{listing?.model}</p>
               </li>
               <li>
                 <h5
@@ -97,16 +136,61 @@ const CarDetails = () => {
                 >
                   Year of Manufacture
                 </h5>
-                <p className="text-sm">2014</p>
+                <p className="text-sm">{listing?.yearOfManufacture}</p>
               </li>
               <li>
                 <h5
                   className="uppercase text-xs
                  text-muted-foreground mb-[1px]"
                 >
-                  Color
+                  Exterior Color
                 </h5>
-                <p className="text-sm">Black</p>
+                <p className="text-sm">{listing?.exteriorColor}</p>
+              </li>
+              <li>
+                <h5
+                  className="uppercase text-xs
+                 text-muted-foreground mb-[1px]"
+                >
+                  Interior Color
+                </h5>
+                <p className="text-sm">{listing?.interiorColor}</p>
+              </li>
+              <li>
+                <h5
+                  className="uppercase text-xs
+                 text-muted-foreground mb-[1px]"
+                >
+                  Body Type
+                </h5>
+                <p className="text-sm">{listing?.bodyType}</p>
+              </li>
+              <li>
+                <h5
+                  className="uppercase text-xs
+                 text-muted-foreground mb-[1px]"
+                >
+                  Drive Train
+                </h5>
+                <p className="text-sm">{listing?.drivetrain}</p>
+              </li>
+              <li>
+                <h5
+                  className="uppercase text-xs
+                 text-muted-foreground mb-[1px]"
+                >
+                  Seating Capacity
+                </h5>
+                <p className="text-sm">{listing?.seatingCapacity}</p>
+              </li>
+              <li>
+                <h5
+                  className="uppercase text-xs
+                 text-muted-foreground mb-[1px]"
+                >
+                  Second Condition
+                </h5>
+                <p className="text-sm">{listing?.secondCondition}</p>
               </li>
             </ul>
           </div>
@@ -115,14 +199,13 @@ const CarDetails = () => {
             <h2 className="font-bold text-lg mb-3">Features</h2>
             <div>
               <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {Object.entries(carFeatures).map(([feature, value]) => (
-                  <li key={feature} className="flex items-center text-sm gap-2">
-                    {value ? (
-                      <CheckSquare className={`w-4 h-4 text-primary/80`} />
-                    ) : (
-                      <X className="w-4 h-4 text-muted-foreground" />
-                    )}
-                    {feature}
+                {getSelectedItems(
+                  listing?.keyFeatures || [],
+                  CAR_KEY_FEATURES_OPTIONS
+                )?.map((feature, index) => (
+                  <li key={index} className="flex items-center text-sm gap-2">
+                    <CheckSquare className={`w-4 h-4 text-primary/80`} />
+                    {feature.label}
                   </li>
                 ))}
               </ul>

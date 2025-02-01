@@ -51,7 +51,7 @@ const Details = ({ params }: { params: { slug: string; carId: string } }) => {
                 imageUrls={listing?.imageUrls}
                 isPending={isPending}
               />
-              <CarDetails />
+              <CarDetails listing={listing} isPending={isPending} />
             </div>
             <div className="pt-0">
               <SellerInfo />
