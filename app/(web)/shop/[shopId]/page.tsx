@@ -2,7 +2,7 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import AllListing from "@/components/shop/all-isting";
+import AllListing from "@/components/shop/all-listing";
 import ShopInfo from "@/components/shop/shop-info";
 import { getShopByIdQueryFn } from "@/lib/fetcher";
 import { ListingType } from "@/@types/api.type";

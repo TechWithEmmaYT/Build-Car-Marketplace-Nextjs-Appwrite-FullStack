@@ -7,6 +7,7 @@ import Link from "next/link";
 import { createSlug, formatCurrency } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { ListingType } from "@/@types/api.type";
+import { CAR_CONDITION_OPTIONS } from "@/constants/cars";
 
 interface CarCardProps {
   listing: ListingType;
@@ -27,6 +28,10 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
   } = listing;
   const slug = createSlug(displayTitle);
 
+  const conditionLabel = CAR_CONDITION_OPTIONS.find(
+    (opt) => opt.value === condition
+  )?.label;
+
   return (
     <div>
       <Link href={`/detail/${slug}/${$id}`}>
@@ -39,8 +44,8 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
         >
           <div
             className={cn(
-              `relative w-full min-h-28 !h-[210px] bg-primary/10`,
-              layout === "list" && "max-w-[185px] md:max-w-[210px] !h-[208px]"
+              `relative w-full min-h-28 !h-[210px] bg-primary/10 overflow-hidden`,
+              layout === "list" && "w-[185px] md:w-[220px] !h-[208px] shrink-0"
             )}
           >
             <Image
@@ -48,7 +53,7 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
               src={imageUrls[0]}
               className={cn(
                 "rounded-t-lg w-full h-full object-cover",
-                layout === "list" && "h-full !rounded-r-none"
+                layout === "list" && "!rounded-r-none"
               )}
               width={layout === "list" ? 300 : 800}
               height={layout === "list" ? 200 : 500}
@@ -66,13 +71,18 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
             <div className="flex flex-col gap-0 ">
               <h3
                 className={cn(
-                  `font-bold text-base text-gray-800 capitalize`,
-                  layout === "list" && "text-lg"
+                  `font-bold text-base text-gray-800 capitalize truncate max-w-full`,
+                  layout === "list" && "text-lg w-auto"
                 )}
               >
                 {displayTitle}
               </h3>
-              <div className="h-5 mt-1 text-sm text-gray-500 truncate w-[200px]">
+              <div
+                className={cn(
+                  `h-auto mt-1 text-sm text-gray-500 line-clamp-2 text-ellipsis`,
+                  layout === "list" && "w-auto h-auto whitespace-break-spaces"
+                )}
+              >
                 {description}
               </div>
             </div>
@@ -89,30 +99,34 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
             >
               <Badge
                 variant="outline"
-                className="border-primary gap-1.5 capitalize !font-medium py-1"
+                className="border-primary gap-1.5 text-[11px] capitalize !font-medium 
+                py-[3px] px-2"
               >
-                <FuelIcon className="size-3.5" />
+                <FuelIcon className="size-3" />
                 {fuelType?.toLowerCase()}
               </Badge>
               <Badge
                 variant="outline"
-                className="border-primary gap-1.5 !font-medium py-1"
+                className="border-primary text-[11px] gap-1.5 !font-medium py-[3px] px-2"
               >
-                <GaugeIcon className="size-3.5" />
-                {mileage} km
+                <GaugeIcon className="size-3" />
+                {mileage} mpg
               </Badge>
               <Badge
                 variant="outline"
-                className="border-primary gap-1.5 capitalize !font-medium py-1"
+                className="border-primary text-[11px] capitalize
+                gap-1.5 !font-medium py-[3px] px-2"
               >
-                <TagIcon className="size-3.5" />
-                {condition?.toLowerCase()}
+                <TagIcon className="size-3" />
+                {conditionLabel}
               </Badge>
               <Badge
                 variant="outline"
-                className="border-primary gap-1.5 capitalize !font-medium py-1 "
+                className="border-primary text-[11px] gap-1.5 capitalize !font-medium 
+                py-[3px] px-2
+                "
               >
-                <CogIcon className="size-3.5" />
+                <CogIcon className="size-3" />
                 {transmission?.toLowerCase()}
               </Badge>
             </div>

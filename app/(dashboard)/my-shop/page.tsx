@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import AllListing from "@/components/shop/all-isting";
+import AllListing from "@/components/shop/all-listing";
 import ShopInfo from "@/components/shop/shop-info";
 import { useQuery } from "@tanstack/react-query";
 import { getMyShopQueryFn } from "@/lib/fetcher";
@@ -12,6 +12,7 @@ const MyShop = () => {
     queryFn: getMyShopQueryFn,
   });
   const user = shopData?.user;
+  const shop = shopData?.shop;
   const listings = shopData?.listings || ([] as ListingType[]);
 
   return (
@@ -23,11 +24,11 @@ const MyShop = () => {
         >
           <div className="pt-1">
             <ShopInfo
-              ownerName={user?.name}
-              shopName={shopData?.shopName}
-              shopId={shopData?.$id}
-              description={shopData?.description}
+              shopName={shop?.shopName}
+              shopId={shop?.$id}
+              description={shop?.description}
               isShopOwner={true}
+              ownerName={user?.name}
               isPending={isPending}
             />
           </div>

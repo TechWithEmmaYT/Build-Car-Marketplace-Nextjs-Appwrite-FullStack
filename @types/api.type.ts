@@ -20,7 +20,7 @@ export type ListingType = {
   $id?: string;
   brand: string;
   model: string;
-  yearOfManufacture: number;
+  yearOfManufacture: string;
   exteriorColor: string;
   interiorColor?: string;
   condition: string;

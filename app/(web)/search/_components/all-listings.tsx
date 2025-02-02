@@ -48,11 +48,16 @@ const AllListings = ({
           className={`w-full grid ${
             layout === "list"
               ? "grid-cols-1 gap-4" // List layout: single column
-              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" // Grid layout: multi-column
+              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5" // Grid layout: multi-column
           }`}
         >
           {listings?.map((listing) => (
-            <CarCard key={listing.$id} listing={listing} layout={layout} />
+            <div
+              key={listing.$id}
+              className={layout === "list" ? "" : "masonry-item"}
+            >
+              <CarCard listing={listing} layout={layout} />
+            </div>
           ))}
         </div>
       )}

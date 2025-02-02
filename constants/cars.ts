@@ -132,13 +132,16 @@ export const CAR_BRAND_OPTIONS = [
 export const CAR_MODEL_OPTIONS = [
   { key: "mercedes-benz", value: "gle-class", label: "GLE-Class" },
   { key: "mercedes-benz", value: "glk-class", label: "GLK-Class" },
+  { key: "mercedes-benz", value: "g-class", label: "G-Class" },
   { key: "mercedes-benz", value: "s-class", label: "S-Class" },
   { key: "tesla", value: "model-s", label: "Model S" },
   { key: "tesla", value: "model-3", label: "Model 3" },
   { key: "tesla", value: "model-x", label: "Model X" },
   { key: "lexus", value: "es300", label: "ES 300" },
   { key: "lexus", value: "rx350", label: "RX 350" },
+  { key: "lexus", value: "gx460", label: "GX 460" },
   { key: "toyota", value: "camry", label: "Camry" },
+  { key: "toyota", value: "land-cruiser", label: "Land Cruiser" },
   { key: "toyota", value: "corolla", label: "Corolla" },
   { key: "toyota", value: "camry-hybrid", label: "Camry Hybrid" },
   { key: "bmw", value: "7-series", label: "7 Series" },
@@ -193,9 +196,14 @@ export const CAR_COLOR_OPTIONS = [
     value: "blue",
     label: "Blue",
   },
+  {
+    value: "other",
+    label: "Other",
+  },
 ];
 
 export const CAR_YEAR_OPTIONS = [
+  { value: "2025", label: "2025" },
   { value: "2023", label: "2023" },
   { value: "2020", label: "2020" },
   { value: "2019", label: "2019" },

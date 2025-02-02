@@ -16,10 +16,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   CAR_BODY_TYPE_OPTIONS,
   CAR_BRAND_OPTIONS,
+  CAR_CONDITION_OPTIONS,
   CAR_DRIVETRAIN_OPTIONS,
   CAR_KEY_FEATURES_OPTIONS,
   CAR_MODEL_OPTIONS,
   CAR_SECOND_CONDITION_OPTIONS,
+  CAR_TRANSMISSION_OPTIONS,
 } from "@/constants/cars";
 
 const CarDetails = ({
@@ -41,6 +43,15 @@ const CarDetails = ({
     listing?.secondCondition || [],
     CAR_SECOND_CONDITION_OPTIONS
   );
+
+  const transmission =
+    CAR_TRANSMISSION_OPTIONS.find(
+      (option) => option?.value === listing?.transmission
+    )?.label || "N/A";
+
+  const conditionLabel =
+    CAR_CONDITION_OPTIONS.find((option) => option.value === listing?.condition)
+      ?.label || "N/A";
 
   const brand =
     CAR_BRAND_OPTIONS.find((option) => option.value === listing?.brand)
@@ -81,19 +92,19 @@ const CarDetails = ({
                   <span className="border-2 rounded-full p-3">
                     <GaugeIcon className="size-5" />
                   </span>
-                  {listing?.mileage}
+                  {listing?.mileage} MPG
                 </li>
                 <li className="flex flex-col items-center text-sm gap-2">
                   <span className="border-2 rounded-full p-3">
                     <CogIcon className="size-5" />
                   </span>
-                  {listing?.transmission?.toLowerCase()}
+                  {transmission}
                 </li>
                 <li className="flex flex-col capitalize items-center text-sm gap-2">
                   <span className="border-2 rounded-full p-3">
                     <TagIcon className="size-5" />
                   </span>
-                  {listing?.condition?.toLowerCase()}
+                  {conditionLabel}
                 </li>
               </ul>
             </div>

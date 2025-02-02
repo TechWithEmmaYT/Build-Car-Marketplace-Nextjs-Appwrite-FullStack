@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     const listings = await databases.listDocuments(
       APP_CONFIG.APPWRITE.DATABASE_ID,
       APP_CONFIG.APPWRITE.CAR_LISTING_ID,
-      [Query.equal("userId", user.$id), Query.equal("shopId", shop.$id)]
+      [Query.equal("userId", user.$id), Query.equal("shop", shop.$id)]
     );
     return NextResponse.json(
       {

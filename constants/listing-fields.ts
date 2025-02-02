@@ -80,7 +80,7 @@ export const addListingFields: FieldType[] = [
   {
     name: "mileage",
     fieldType: "number",
-    label: "Mileage (KM)",
+    label: "Mileage",
     value: "",
     required: false,
     disabled: false,

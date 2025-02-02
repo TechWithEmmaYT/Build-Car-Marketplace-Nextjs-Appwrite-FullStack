@@ -64,7 +64,7 @@ const CarCarousel = ({
           </div>
         ) : (
           <Carousel className="b-carousel-slider" setApi={setApi}>
-            <CarouselContent className="!p-0">
+            <CarouselContent className="!p-0 bg-primary/10">
               {imageUrls?.map((imageUrl, index) => (
                 <CarouselItem className="!p-0 h-full" key={index}>
                   <div

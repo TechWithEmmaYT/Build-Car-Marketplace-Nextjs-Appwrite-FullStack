@@ -27,6 +27,7 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import {
   CAR_BRAND_OPTIONS,
   CAR_COLOR_OPTIONS,
+  CAR_CONDITION_OPTIONS,
   CAR_MODEL_OPTIONS,
   CAR_YEAR_OPTIONS,
 } from "@/constants/cars";
@@ -110,17 +111,20 @@ const AddListing = () => {
   };
 
   function onSubmit(values: FormDataType) {
-    const { brand, model, yearOfManufacture, exteriorColor } = values;
+    const { brand, model, condition, yearOfManufacture, exteriorColor } =
+      values;
     const displayTitle = [
+      condition === "BRAND_NEW" ? "New" : null,
       getLabel(brand, CAR_BRAND_OPTIONS),
       getLabel(model, CAR_MODEL_OPTIONS),
       getLabel(yearOfManufacture, CAR_YEAR_OPTIONS),
       getLabel(exteriorColor, CAR_COLOR_OPTIONS),
-    ].join(" ");
+    ]
+      .filter(Boolean)
+      .join(" ");
 
     const payload = {
       ...values,
-      yearOfManufacture: Number(yearOfManufacture),
       displayTitle,
       shopId: shop?.$id,
     };
@@ -152,7 +156,7 @@ const AddListing = () => {
             className="flex items-center justify-center
            bg-white rounded-[8px] p-4 mb-4"
           >
-            <CardTitle className="font-semibold text-xl">Add Car</CardTitle>
+            <CardTitle className="font-semibold text-xl">Add Listing</CardTitle>
           </CardHeader>
 
           <CardContent className="bg-white rounded-[8px] p-4 px-6 pb-8">
@@ -195,7 +199,7 @@ const AddListing = () => {
                                   <button
                                     onClick={() => handleRemoveImage(index)} // Add your remove logic here
                                     className="absolute top-0 right-0 p-1
-                                     bg-black rounded-full"
+                                     bg-black text-white rounded-full"
                                   >
                                     <X className="w-4 h-4 text-gray-600" />
                                   </button>
