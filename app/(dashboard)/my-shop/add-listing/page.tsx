@@ -118,7 +118,9 @@ const AddListing = () => {
       getLabel(brand, CAR_BRAND_OPTIONS),
       getLabel(model, CAR_MODEL_OPTIONS),
       getLabel(yearOfManufacture, CAR_YEAR_OPTIONS),
-      getLabel(exteriorColor, CAR_COLOR_OPTIONS),
+      exteriorColor !== "other"
+        ? getLabel(exteriorColor, CAR_COLOR_OPTIONS)
+        : null,
     ]
       .filter(Boolean)
       .join(" ");
@@ -199,9 +201,9 @@ const AddListing = () => {
                                   <button
                                     onClick={() => handleRemoveImage(index)} // Add your remove logic here
                                     className="absolute top-0 right-0 p-1
-                                     bg-black text-white rounded-full"
+                                     bg-black rounded-full"
                                   >
-                                    <X className="w-4 h-4 text-gray-600" />
+                                    <X className="w-4 h-4 !text-white  " />
                                   </button>
                                 </div>
                               ))}

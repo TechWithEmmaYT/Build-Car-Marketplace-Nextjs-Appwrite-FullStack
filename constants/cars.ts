@@ -151,82 +151,9 @@ export const CAR_MODEL_OPTIONS = [
   { key: "tata", value: "nexon", label: "Nexon" },
   { key: "tata", value: "harrier", label: "Harrier" },
   { key: "audi", value: "a4", label: "A4" },
-  { key: "audi", value: "a6", label: "A6" },
+  { key: "audi", value: "a7", label: "A7" },
   { key: "hyundai", value: "accent", label: "Accent" },
   { key: "hyundai", value: "venue", label: "Venue" },
-];
-
-export const CAR_CONDITION_OPTIONS = [
-  { value: "BRAND_NEW", label: "Brand New" },
-  { value: "USED", label: "Used" },
-];
-
-export const CAR_FUELTYPE_OPTIONS = [
-  { value: "GASOLINE", label: "Gasoline" },
-  { value: "DIESEL", label: "Diesel" },
-  { value: "ELECTRIC", label: "Electric" },
-  { value: "HYBRID", label: "Hybrid" },
-];
-
-export const CAR_TRANSMISSION_OPTIONS = [
-  { value: "AUTOMATIC", label: "Automatic" },
-  { value: "MANUAL", label: "Manual" },
-  { value: "CVT", label: "CVT" },
-  { value: "AMT", label: "AMT" },
-];
-
-export const CAR_COLOR_OPTIONS = [
-  {
-    value: "white",
-    label: "White",
-  },
-  {
-    value: "gray",
-    label: "gray",
-  },
-  {
-    value: "black",
-    label: "Black",
-  },
-  {
-    value: "red",
-    label: "Red",
-  },
-  {
-    value: "blue",
-    label: "Blue",
-  },
-  {
-    value: "other",
-    label: "Other",
-  },
-];
-
-export const CAR_YEAR_OPTIONS = [
-  { value: "2025", label: "2025" },
-  { value: "2023", label: "2023" },
-  { value: "2020", label: "2020" },
-  { value: "2019", label: "2019" },
-  { value: "2017", label: "2017" },
-  { value: "2015", label: "2015" },
-  { value: "2013", label: "2013" },
-  { value: "2011", label: "2011" },
-];
-
-export const CAR_YEAR_RANGE_OPTIONS = [
-  { value: "2011-2013", label: "2011 - 2013" },
-  { value: "2015-2017", label: "2015 - 2017" },
-  { value: "2019-2020", label: "2019 - 2020" },
-  { value: "2021-2023", label: "2021 - 2023" },
-];
-
-export const CAR_PRICE_RANGE_OPTIONS = [
-  { value: "0-50000", label: "Under 50k" },
-  { value: "50000-100000", label: "50 - 100k" },
-  { value: "100000-300000", label: "100 - 300k" },
-  { value: "300000-500000", label: "300 - 500k" },
-  { value: "500000-1000000", label: "500 - 1M" },
-  { value: "custom", label: "Custom" },
 ];
 
 export const CAR_BODY_TYPE_OPTIONS = [
@@ -239,13 +166,6 @@ export const CAR_BODY_TYPE_OPTIONS = [
   { value: "van", label: "Van/Minivan" },
   { value: "wagon", label: "Wagon" },
   { value: "other", label: "Other" },
-];
-
-export const CAR_DRIVETRAIN_OPTIONS = [
-  { value: "FWD", label: "Front-Wheel Drive (FWD)" },
-  { value: "RWD", label: "Rear-Wheel Drive (RWD)" },
-  { value: "AWD", label: "All-Wheel Drive (AWD)" },
-  { value: "4WD", label: "Four-Wheel Drive (4WD)" },
 ];
 
 export const CAR_SECOND_CONDITION_OPTIONS = [
@@ -289,4 +209,85 @@ export const CAR_KEY_FEATURES_OPTIONS = [
   { value: "remoteStart", label: "Remote Start" },
   { value: "powerLocks", label: "Power Locks" },
   { value: "airConditioning", label: "Air Conditioning" },
+];
+
+export const CAR_COLOR_OPTIONS = [
+  {
+    value: "white",
+    label: "White",
+  },
+  {
+    value: "gray",
+    label: "gray",
+  },
+  {
+    value: "black",
+    label: "Black",
+  },
+  {
+    value: "red",
+    label: "Red",
+  },
+  {
+    value: "blue",
+    label: "Blue",
+  },
+  {
+    value: "other",
+    label: "Other",
+  },
+];
+
+export const CAR_CONDITION_OPTIONS = [
+  { value: "BRAND_NEW", label: "Brand New" },
+  { value: "USED", label: "Used" },
+];
+
+export const CAR_FUELTYPE_OPTIONS = [
+  { value: "PETROL", label: "Petrol" },
+  { value: "DIESEL", label: "Diesel" },
+  { value: "ELECTRIC", label: "Electric" },
+  { value: "HYBRID", label: "Hybrid" },
+];
+
+export const CAR_TRANSMISSION_OPTIONS = [
+  { value: "AUTOMATIC", label: "Automatic" },
+  { value: "MANUAL", label: "Manual" },
+  { value: "CVT", label: "CVT" },
+  { value: "AMT", label: "AMT" },
+];
+
+export const CAR_DRIVETRAIN_OPTIONS = [
+  { value: "FWD", label: "Front-Wheel Drive (FWD)" },
+  { value: "RWD", label: "Rear-Wheel Drive (RWD)" },
+  { value: "AWD", label: "All-Wheel Drive (AWD)" },
+  { value: "4WD", label: "Four-Wheel Drive (4WD)" },
+];
+
+export const CAR_YEAR_OPTIONS = [
+  { value: "2025", label: "2025" },
+  { value: "2023", label: "2023" },
+  { value: "2020", label: "2020" },
+  { value: "2019", label: "2019" },
+  { value: "2017", label: "2017" },
+  { value: "2015", label: "2015" },
+  { value: "2013", label: "2013" },
+  { value: "2012", label: "2012" },
+  { value: "2011", label: "2011" },
+];
+
+export const CAR_YEAR_RANGE_OPTIONS = [
+  { value: "2011-2013", label: "2011 - 2013" },
+  { value: "2015-2017", label: "2015 - 2017" },
+  { value: "2019-2020", label: "2019 - 2020" },
+  { value: "2021-2023", label: "2021 - 2023" },
+];
+
+export const CAR_PRICE_RANGE_OPTIONS = [
+  { value: "0-50000", label: "Under 50k" },
+  { value: "50000-100000", label: "50 - 100k" },
+  { value: "100000-300000", label: "100 - 300k" },
+  { value: "300000-500000", label: "300 - 500k" },
+  { value: "500000-1000000", label: "500 - 1M" },
+  { value: "custom", label: "Custom" },
 ];
