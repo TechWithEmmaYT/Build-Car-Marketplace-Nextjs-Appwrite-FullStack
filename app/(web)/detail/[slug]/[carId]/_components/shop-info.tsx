@@ -1,26 +1,30 @@
 import Link from "next/link";
 import React from "react";
-import { Loader2, MessageSquareText, User } from "lucide-react";
+import { User } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/helper";
 import { Skeleton } from "@/components/ui/skeleton";
+import ChatSellerButton from "@/components/ChatSellerButton";
 
 interface ShopInfoProps {
+  displayTitle: string;
   price: number;
   shopId: string;
   shopName: string;
+  shopOwnerUserId: string;
   description: string;
   isPending: boolean;
 }
 
 const ShopInfo = ({
+  displayTitle,
   price,
   shopId,
   shopName,
   description,
   isPending,
+  shopOwnerUserId,
 }: ShopInfoProps) => {
   return (
     <div className="w-full b-seller-info-wrapper">
@@ -78,17 +82,11 @@ const ShopInfo = ({
 
               {/* {Chat Button } */}
               <div className="mt-4">
-                <Link href={`/chat/${shopId}`}>
-                  <Button
-                    variant="default"
-                    size="lg"
-                    className="w-full border-primary text-white
-             !gap-1 h-10 text-[15px] font-medium"
-                  >
-                    <MessageSquareText className="!w-5 !h-5" />
-                    Start chat
-                  </Button>
-                </Link>
+                <ChatSellerButton
+                  displayTitle={displayTitle}
+                  shopName={shopName}
+                  shopOwnerUserId={shopOwnerUserId}
+                />
               </div>
             </CardContent>
           </Card>

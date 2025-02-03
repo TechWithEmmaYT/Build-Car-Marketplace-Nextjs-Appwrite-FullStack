@@ -37,7 +37,7 @@ const NavBar = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: logoutMutationFn,
     onSuccess: () => {
-      queryClient.resetQueries({
+      queryClient.refetchQueries({
         queryKey: ["currentUser"],
       });
       router.push("/");
@@ -58,13 +58,9 @@ const NavBar = () => {
     router.push("/my-shop/add-listing");
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchKeyword) {
-      router.push(`/search?keyword=${searchKeyword}`);
-    } else {
-      router.push("/search");
-    }
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    router.push(`/search?keyword=${encodeURIComponent(searchKeyword)}`); // Navigate to search page
   };
 
   const handleLogout = useCallback(async () => {
@@ -94,10 +90,12 @@ const NavBar = () => {
                 className="w-full max-w-[320px] h-10 bg-white rounded-lg
              relative"
               >
-                <form onSubmit={handleSearchSubmit}>
+                <form onSubmit={handleSearch}>
                   <div className="flex items-center justify-between">
                     <Input
                       type="search"
+                      name="keyword"
+                      autoComplete="off"
                       className="flex-1 !shadow-none h-10 text-black
                    !ring-0 !border-0"
                       placeholder="Type your search here"
@@ -156,7 +154,7 @@ const NavBar = () => {
               <Button
                 size="icon"
                 className="rounded-full shadow-sm !py-0 !bg-white !text-black"
-                onClick={() => router.push("/my-shop/messages")}
+                onClick={() => router.push("/profile-messages")}
               >
                 <MessageSquareText />
               </Button>

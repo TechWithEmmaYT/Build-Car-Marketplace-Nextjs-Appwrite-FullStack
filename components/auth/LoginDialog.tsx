@@ -61,7 +61,7 @@ const LoginDialog = () => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     mutate(values, {
       onSuccess: () => {
-        queryClient.resetQueries({
+        queryClient.refetchQueries({
           queryKey: ["currentUser"],
         });
         toast({

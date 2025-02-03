@@ -46,6 +46,7 @@ export type AllCarListingPayloadType = {
   brand?: string[];
   model?: string[];
   color?: string[];
+  condition?: string[];
   price?: string;
   keyword?: string;
   year_min?: number;

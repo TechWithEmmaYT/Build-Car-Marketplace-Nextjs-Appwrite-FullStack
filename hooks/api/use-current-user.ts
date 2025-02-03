@@ -5,7 +5,7 @@ const useCurrentUser = () => {
   return useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUserMutationFn,
-    staleTime: 1000 * 60 * 60 * 24,
+    staleTime: 0,
   });
 };
 export default useCurrentUser;

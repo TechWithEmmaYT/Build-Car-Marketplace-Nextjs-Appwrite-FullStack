@@ -11,6 +11,7 @@ export async function GET(request: Request) {
     const brands = searchParams.get("brand")?.split(",");
     const models = searchParams.get("model")?.split(",");
     const colors = searchParams.get("color")?.split(",");
+    const conditions = searchParams.get("condition")?.split(",");
     const priceRange = searchParams.get("price")?.split("-");
     const keyword = searchParams.get("keyword");
 
@@ -20,6 +21,7 @@ export async function GET(request: Request) {
     if (brands?.length) queries.push(Query.equal("brand", brands));
     if (models?.length) queries.push(Query.equal("model", models));
     if (colors?.length) queries.push(Query.equal("exteriorColor", colors));
+    if (conditions?.length) queries.push(Query.equal("condition", conditions));
     if (priceRange?.length === 2) {
       const [minPrice, maxPrice] = priceRange.map(Number);
       queries.push(Query.greaterThanEqual("price", minPrice));
@@ -37,11 +39,8 @@ export async function GET(request: Request) {
     }
 
     if (keyword) {
-      queries.push(Query.search("title", keyword));
-      queries.push(Query.search("description", keyword));
+      queries.push(Query.search("displayTitle", keyword));
     }
-
-    console.log(queries);
 
     const { databases } = await createAnonymousClient();
     // Fetch listings

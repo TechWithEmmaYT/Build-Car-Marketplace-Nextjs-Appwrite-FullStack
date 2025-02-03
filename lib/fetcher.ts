@@ -20,6 +20,7 @@ export const getAllCarListingQueryFn = async ({
   brand,
   model,
   color,
+  condition,
   keyword,
   price,
   year_max,
@@ -31,6 +32,8 @@ export const getAllCarListingQueryFn = async ({
   if (brand && brand.length !== 0) queryParams.append("brand", brand.join(","));
   if (model && model.length !== 0) queryParams.append("model", model.join(","));
   if (color && color.length !== 0) queryParams.append("color", color.join(","));
+  if (condition && condition.length !== 0)
+    queryParams.append("condition", condition.join(","));
   if (price) queryParams.append("price", price);
   if (keyword) queryParams.append("keyword", keyword);
   if (year_min) queryParams.append("year_min", year_min?.toString());

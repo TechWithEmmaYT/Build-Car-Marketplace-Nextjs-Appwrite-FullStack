@@ -27,15 +27,8 @@ body {
   }
 }
 
-.masonry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  grid-auto-rows: 10px;
-  gap: 16px;
-}
-
-.masonry-item {
-  grid-row-end: span 8;
+.sendbird-ui-header__right {
+  display: none !important;
 }
 
 @layer utilities {

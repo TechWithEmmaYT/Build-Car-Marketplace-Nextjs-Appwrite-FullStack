@@ -54,9 +54,11 @@ const Details = ({ params }: { params: { slug: string; carId: string } }) => {
             </div>
             <div className="pt-0">
               <ShopInfo
+                displayTitle={listing?.displayTitle}
                 price={listing?.price}
                 shopId={listing?.shop?.$id || ""}
                 shopName={listing?.shop?.shopName || ""}
+                shopOwnerUserId={listing?.shop?.userId || ""}
                 description={listing?.shop?.description || ""}
                 isPending={isPending || isError}
               />

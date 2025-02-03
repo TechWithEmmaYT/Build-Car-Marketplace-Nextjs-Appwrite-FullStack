@@ -20,6 +20,7 @@ const SearchContent = () => {
       filters.yearMin,
       filters.yearMax,
       filters.keyword,
+      filters.condition,
     ],
     queryFn: () =>
       getAllCarListingQueryFn({
@@ -27,6 +28,7 @@ const SearchContent = () => {
         model: filters.model,
         color: filters.color,
         price: filters.price,
+        condition: filters.condition,
         year_min: filters.yearMin,
         year_max: filters.yearMax,
         keyword: filters.keyword,

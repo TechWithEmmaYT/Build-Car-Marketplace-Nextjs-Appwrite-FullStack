@@ -23,6 +23,8 @@ import {
   CAR_SECOND_CONDITION_OPTIONS,
   CAR_TRANSMISSION_OPTIONS,
 } from "@/constants/cars";
+import useCurrentUser from "@/hooks/api/use-current-user";
+import useLogin from "@/hooks/use-login-dialog";
 
 const CarDetails = ({
   listing,
@@ -32,6 +34,18 @@ const CarDetails = ({
   isPending: boolean;
 }) => {
   const router = useRouter();
+  const { onOpen } = useLogin();
+  const { data: userData, isPending: isLoading } = useCurrentUser();
+  const user = userData?.user;
+
+  const handleChat = () => {
+    if (!user) {
+      onOpen();
+      return;
+    }
+    router.push(`/message/${listing?.shop?.$id}`);
+  };
+
   const getSelectedItems = (
     values: string[] = [],
     options: { label: string; value: string }[]
@@ -224,9 +238,8 @@ const CarDetails = ({
             <Separator />
             <div className="my-4">
               <Button
-                onClick={() => {
-                  router.push(`/chat/${listing?.shop?.$id}`);
-                }}
+                onClick={handleChat}
+                disabled={isLoading}
                 size="lg"
                 className="text-[15px] font-medium px-"
               >
