@@ -235,7 +235,7 @@ const CarDetails = ({
             </div>
 
             <Separator />
-            <div className="my-4">
+            <div className="my-4 w-full max-w-7">
               <ChatSellerButton
                 displayTitle={listing?.displayTitle}
                 shopOwnerUserId={listing?.shop?.userId || ""}
