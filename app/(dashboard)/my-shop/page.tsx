@@ -28,6 +28,7 @@ const MyShop = () => {
               shopId={shop?.$id}
               description={shop?.description}
               isShopOwner={true}
+              shopOwnerUserId={shop?.userId}
               ownerName={user?.name}
               isPending={isPending}
             />

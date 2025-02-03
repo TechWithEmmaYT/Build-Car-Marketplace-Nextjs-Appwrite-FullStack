@@ -31,6 +31,7 @@ const Shop = () => {
               shopName={shop?.shopName}
               shopId={shop?.$id}
               description={shop?.description}
+              shopOwnerUserId={shop?.userId}
               isShopOwner={false}
               isPending={isPending}
             />

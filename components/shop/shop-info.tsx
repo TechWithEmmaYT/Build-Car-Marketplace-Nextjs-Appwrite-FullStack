@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import Link from "next/link";
+import ChatSellerButton from "../ChatSellerButton";
 
 type ShopInfoProps = {
   shopId: string;
@@ -14,6 +15,7 @@ type ShopInfoProps = {
   description?: string;
   isShopOwner?: boolean;
   isPending?: boolean;
+  shopOwnerUserId: string;
 };
 
 const ShopInfo = ({
@@ -21,6 +23,7 @@ const ShopInfo = ({
   ownerName,
   shopName,
   description,
+  shopOwnerUserId,
   isShopOwner = false,
   isPending = false,
 }: ShopInfoProps) => {
@@ -87,17 +90,11 @@ const ShopInfo = ({
             {isPending ? (
               <Skeleton className="h-10 w-full" />
             ) : (
-              <Link href={`/messages/${shopId}`}>
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="w-full
-                !gap-1 h-10 text-[15px] font-medium"
-                >
-                  <MessageSquareText className="!w-5 !h-5" />
-                  Start chat
-                </Button>
-              </Link>
+              <ChatSellerButton
+                displayTitle="Start chat"
+                shopName={shopName || ""}
+                shopOwnerUserId={shopId}
+              />
             )}
           </div>
         )}

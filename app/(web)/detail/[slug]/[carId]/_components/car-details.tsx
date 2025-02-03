@@ -5,11 +5,9 @@ import {
   CogIcon,
   FuelIcon,
   GaugeIcon,
-  MessageSquareText,
   TagIcon,
 } from "lucide-react";
 import { ListingType } from "@/@types/api.type";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,6 +23,7 @@ import {
 } from "@/constants/cars";
 import useCurrentUser from "@/hooks/api/use-current-user";
 import useLogin from "@/hooks/use-login-dialog";
+import ChatSellerButton from "@/components/ChatSellerButton";
 
 const CarDetails = ({
   listing,
@@ -237,15 +236,11 @@ const CarDetails = ({
 
             <Separator />
             <div className="my-4">
-              <Button
-                onClick={handleChat}
-                disabled={isLoading}
-                size="lg"
-                className="text-[15px] font-medium px-"
-              >
-                <MessageSquareText className="!w-5 !h-5" />
-                Chat seller
-              </Button>
+              <ChatSellerButton
+                displayTitle={listing?.displayTitle}
+                shopOwnerUserId={listing?.shop?.userId || ""}
+                shopName={listing?.shop?.shopName || ""}
+              />
             </div>
           </CardContent>
         </Card>
