@@ -46,6 +46,7 @@ const ProfileMessages = () => {
                 <SendbirdProvider
                   appId={APP_CONFIG.SEND_BIRD.APP_ID}
                   userId={user.$id}
+                  nickname={user.name}
                   colorSet={myColorSet}
                   allowProfileEdit={false}
                   isUserIdUsedForNickname={false}

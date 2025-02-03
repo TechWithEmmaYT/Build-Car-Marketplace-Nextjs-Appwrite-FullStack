@@ -91,7 +91,7 @@ const ShopInfo = ({
               <Skeleton className="h-10 w-full" />
             ) : (
               <ChatSellerButton
-                displayTitle="Start chat"
+                displayTitle=""
                 shopName={shopName || ""}
                 shopOwnerUserId={shopId}
               />
