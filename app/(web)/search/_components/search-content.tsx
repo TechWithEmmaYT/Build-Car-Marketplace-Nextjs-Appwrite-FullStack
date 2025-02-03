@@ -50,6 +50,7 @@ const SearchContent = () => {
       <div className="grid grid-cols-12 gap-6">
         {/* Filters Sidebar */}
         <Filters />
+
         {/* All Listings */}
         <AllListings listings={listings} isPending={isPending} />
       </div>

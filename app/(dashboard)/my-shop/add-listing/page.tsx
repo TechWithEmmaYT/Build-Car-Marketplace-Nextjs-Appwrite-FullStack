@@ -27,7 +27,6 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import {
   CAR_BRAND_OPTIONS,
   CAR_COLOR_OPTIONS,
-  CAR_CONDITION_OPTIONS,
   CAR_MODEL_OPTIONS,
   CAR_YEAR_OPTIONS,
 } from "@/constants/cars";
@@ -77,8 +76,6 @@ const AddListing = () => {
       imageUrls: [],
     },
   });
-
-  console.log(shop, "shop");
 
   // Watch the imageUrls field for changes
   const imageUrls = useWatch({

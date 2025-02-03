@@ -3,6 +3,8 @@ import { createSessionClient } from "@/lib/appwrite";
 import { Query } from "node-appwrite";
 import { APP_CONFIG } from "@/lib/app-config";
 
+export const dynamic = "force-dynamic";
+
 export const GET = async (req: NextRequest) => {
   try {
     const { account, databases } = await createSessionClient();

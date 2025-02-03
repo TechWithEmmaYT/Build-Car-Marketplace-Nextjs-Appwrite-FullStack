@@ -117,7 +117,7 @@ const useFilters = () => {
       case "color":
         return setColor(Array.isArray(values) ? values : null);
       case "keyword":
-        return setPrice(typeof values === "string" ? values : null);
+        return setKeyword(typeof values === "string" ? values : null);
       default:
         throw new Error(`Invalid filter key: ${key}`);
     }
