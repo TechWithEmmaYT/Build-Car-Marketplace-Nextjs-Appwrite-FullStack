@@ -109,7 +109,7 @@ Deploy your app using Vercel for optimal performance.
 
 <details>
   <summary>Click to toggle Custom Theme Styles</summary>
-  
+
 ```css
 body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -177,45 +177,45 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    }
+  }
 
-.dark {
---background: 222.2 84% 4.9%;
---foreground: 210 40% 98%;
---card: 222.2 84% 4.9%;
---card-foreground: 210 40% 98%;
---popover: 222.2 84% 4.9%;
---popover-foreground: 210 40% 98%;
---primary: 141 100% 36%;
---primary-foreground: 222.2 47.4% 11.2%;
---secondary: 217.2 32.6% 17.5%;
---secondary-foreground: 210 40% 98%;
---muted: 217.2 32.6% 17.5%;
---muted-foreground: 215 20.2% 65.1%;
---accent: 217.2 32.6% 17.5%;
---accent-foreground: 210 40% 98%;
---destructive: 0 62.8% 30.6%;
---destructive-foreground: 210 40% 98%;
---border: 217.2 32.6% 17.5%;
---input: 217.2 32.6% 17.5%;
---ring: 141 100% 36%;
---chart-1: 220 70% 50%;
---chart-2: 160 60% 45%;
---chart-3: 30 80% 55%;
---chart-4: 280 65% 60%;
---chart-5: 340 75% 55%;
---sidebar-background: 240 5.9% 10%;
---sidebar-foreground: 240 4.8% 95.9%;
---sidebar-primary: 141 100% 36%;
---sidebar-primary-foreground: 0 0% 100%;
---sidebar-accent: 240 3.7% 15.9%;
---sidebar-accent-foreground: 240 4.8% 95.9%;
---sidebar-border: 240 3.7% 15.9%;
---sidebar-ring: 217.2 91.2% 59.8%;
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 141 100% 36%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 141 100% 36%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 141 100% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
 }
-}
+```
 
-````
 </details>
 
 ---
@@ -392,7 +392,7 @@ export const CAR_PRICE_RANGE_OPTIONS = [
   { value: "500000-1000000", label: "500 - 1M" },
   { value: "custom", label: "Custom" },
 ];
-````
+```
 
 </details>
 
