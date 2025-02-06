@@ -287,6 +287,20 @@ export const CAR_PRICE_RANGE_OPTIONS = [
   <summary>Click to toggle Listing Fields</summary>
 
 ```javascript
+import { FieldType } from "@/@types/index.type";
+import {
+  CAR_BRAND_OPTIONS,
+  CAR_TRANSMISSION_OPTIONS,
+  CAR_CONDITION_OPTIONS,
+  CAR_COLOR_OPTIONS,
+  CAR_YEAR_OPTIONS,
+  CAR_MODEL_OPTIONS,
+  CAR_FUELTYPE_OPTIONS,
+  CAR_BODY_TYPE_OPTIONS,
+  CAR_SECOND_CONDITION_OPTIONS,
+  CAR_KEY_FEATURES_OPTIONS,
+  CAR_DRIVETRAIN_OPTIONS,
+} from "./car-options";
 export const addListingFields: FieldType[] = [
   {
     name: "brand",
