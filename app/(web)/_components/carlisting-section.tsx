@@ -2,7 +2,7 @@
 import React from "react";
 import CarCard from "@/components/CardCard";
 import { Button } from "@/components/ui/button";
-import { CAR_BRAND_OPTIONS, cars } from "@/constants/cars";
+import { CAR_BRAND_OPTIONS } from "@/constants/car-options";
 import { useQuery } from "@tanstack/react-query";
 import { getAllCarListingQueryFn } from "@/lib/fetcher";
 import { CarListingSkeleton } from "@/components/skeleton-loader/carlisting-skeleton";

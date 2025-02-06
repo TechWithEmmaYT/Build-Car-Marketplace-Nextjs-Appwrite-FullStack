@@ -67,19 +67,7 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
           {...register(name)}
         />
       )}
-      {fieldType === "phone" && (
-        <PhoneInput
-          id={name}
-          className="phone--input !h-12"
-          autoComplete="off"
-          disabled={disabled}
-          placeholder={placeholder || label}
-          defaultValue={defaultValue}
-          onChange={(value) => {
-            onChange?.(value);
-          }}
-        />
-      )}
+
       {fieldType === "currency" && (
         <div className="relative">
           <span
@@ -115,6 +103,19 @@ const FormGenerator: React.FC<FormGeneratorProps> = ({
             })}
           />
         </div>
+      )}
+      {fieldType === "phone" && (
+        <PhoneInput
+          id={name}
+          className="phone--input !h-12"
+          autoComplete="off"
+          disabled={disabled}
+          placeholder={placeholder || label}
+          defaultValue={defaultValue}
+          onChange={(value) => {
+            onChange?.(value);
+          }}
+        />
       )}
       {fieldType === "textarea" && (
         <Textarea

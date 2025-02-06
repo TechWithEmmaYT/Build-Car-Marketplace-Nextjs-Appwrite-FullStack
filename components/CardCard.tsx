@@ -7,7 +7,7 @@ import Link from "next/link";
 import { createSlug, formatCurrency } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { ListingType } from "@/@types/api.type";
-import { CAR_CONDITION_OPTIONS } from "@/constants/cars";
+import { CAR_CONDITION_OPTIONS } from "@/constants/car-options";
 
 interface CarCardProps {
   listing: ListingType;
@@ -37,15 +37,17 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
       <Link href={`/detail/${slug}/${$id}`}>
         <Card
           className={cn(
-            `border rounded-lg shadow-sm p-0 flex flex-col gap-4
-            `,
-            layout === "list" && "flex-row md:flex-row  border-primary/30"
+            `border rounded-lg shadow-sm p-0 flex flex-col gap-4`,
+            layout === "list" && "flex-col md:flex-row border-primary/30"
           )}
         >
           <div
             className={cn(
-              `relative w-full min-h-28 !h-[210px] bg-primary/10 overflow-hidden`,
-              layout === "list" && "w-[185px] md:w-[220px] !h-[208px] shrink-0"
+              `relative w-full min-h-28 !h-[210px] 
+              bg-primary/10 overflow-hidden`,
+              layout === "list" &&
+                `w-full 
+              md:w-[220px] !h-[210px] shrink-0`
             )}
           >
             <Image
@@ -53,7 +55,7 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
               src={imageUrls[0]}
               className={cn(
                 "rounded-t-lg w-full h-full object-cover",
-                layout === "list" && "!rounded-r-none"
+                layout === "list" && "md:!rounded-r-none"
               )}
               width={layout === "list" ? 300 : 800}
               height={layout === "list" ? 200 : 500}
@@ -63,12 +65,12 @@ const CarCard: React.FC<CarCardProps> = ({ listing, layout = "grid" }) => {
           </div>
           <CardContent
             className={cn(
-              `
-            !p-4 !pt-0 space-y-3`,
-              layout === "list" && "flex-1 !p-[18px_16px_18px_0px]"
+              `!p-4 !pt-0 space-y-3`,
+              layout === "list" &&
+                "flex-1 !p-[18px_16px_18px_16px] md:!p-[18px_16px_18px_0px]"
             )}
           >
-            <div className="flex flex-col gap-0 ">
+            <div className="flex flex-col gap-0">
               <h3
                 className={cn(
                   `font-bold text-base text-gray-800 capitalize truncate max-w-full`,

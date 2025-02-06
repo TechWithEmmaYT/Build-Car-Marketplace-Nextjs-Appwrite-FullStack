@@ -20,7 +20,7 @@ import {
   CAR_MODEL_OPTIONS,
   CAR_SECOND_CONDITION_OPTIONS,
   CAR_TRANSMISSION_OPTIONS,
-} from "@/constants/cars";
+} from "@/constants/car-options";
 import useCurrentUser from "@/hooks/api/use-current-user";
 import useLogin from "@/hooks/use-login-dialog";
 import ChatSellerButton from "@/components/ChatSellerButton";
@@ -236,6 +236,16 @@ const CarDetails = ({
 
             <Separator />
             <div className="my-4 w-full max-w-[170px]">
+              {/* <Button
+                variant="default"
+                size="lg"
+                className="w-full
+             border-primary text-white !gap-1 h-10 text-[15px]
+              font-medium disabled:pointer-events-none"
+              >
+                <MessageSquareText className="!w-5 !h-5" />
+                Start chat
+              </Button> */}
               <ChatSellerButton
                 displayTitle={listing?.displayTitle}
                 shopOwnerUserId={listing?.shop?.userId || ""}

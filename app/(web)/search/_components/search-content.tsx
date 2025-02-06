@@ -1,14 +1,17 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import NavBreadCrumb from "@/components/NavBreadCrumb";
 import useFilters from "@/hooks/use-filter";
 import { getAllCarListingQueryFn } from "@/lib/fetcher";
 import Filters from "./Filters";
 import AllListings from "./all-listings";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 const SearchContent = () => {
   const { filters } = useFilters();
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   const { data, isPending } = useQuery({
     queryKey: [
@@ -42,17 +45,40 @@ const SearchContent = () => {
     { label: "Auto Hunt", href: "/" },
     { label: `${listings?.length || 0} results cars found` },
   ];
+
+  const onFilterOpen = () => {
+    setIsFiltersOpen(true);
+  };
   return (
     <div className="space-y-3">
       {/* Breadcrumb */}
       <NavBreadCrumb breadcrumbItems={breadcrumbItems} />
       {/* Filters and Results Grid */}
-      <div className="grid grid-cols-12 gap-6">
-        {/* Filters Sidebar */}
-        <Filters />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden">
+          <Sheet open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
+            <SheetContent
+              side="left"
+              className="w-[300px] !p-0 sm:w-[400px] overflow-y-auto"
+            >
+              <Filters />
+            </SheetContent>
+          </Sheet>
+        </div>
+        {/* Filters (Desktop) */}
+        <div className="hidden lg:block col-span-1">
+          <Filters />
+        </div>
 
         {/* All Listings */}
-        <AllListings listings={listings} isPending={isPending} />
+        <div className="col-span-1 lg:col-span-3">
+          <AllListings
+            listings={listings}
+            isPending={isPending}
+            onFilterOpen={onFilterOpen}
+          />
+        </div>
       </div>
     </div>
   );

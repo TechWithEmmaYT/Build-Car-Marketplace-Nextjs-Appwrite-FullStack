@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import debounce from "lodash.debounce";
 
+// T is a generic type parameter. It allows the useDebounce hook
+// to work with any type of value, making the hook more flexible
+//  and reusable.
+
 const useDebounce = <T>(value: T, delay: number = 300): T => {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 

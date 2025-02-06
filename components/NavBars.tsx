@@ -67,11 +67,12 @@ const NavBar = () => {
     mutate();
   }, [mutate]);
 
-  const hideSearchPathname = ["/", "/my-shop/add-listing", "/my-shop/messages"];
-  const hideNavPath = ["/my-shop", "/my-shop/add-listing", "/my-shop/messages"];
+  const hideSearchPathname = ["/", "/my-shop/add-listing", "/profile-messages"];
+  const hideNavPath = ["/my-shop", "/my-shop/add-listing", "/profile-messages"];
+
   return (
     <header
-      className="w-full bg-primary sticky top-0 align-top z-10 h-14"
+      className="w-full px-3 md:px-0 bg-primary sticky top-0 align-top z-10 h-14"
       style={{
         boxShadow: "1px 1px 4px #50727d66",
       }}

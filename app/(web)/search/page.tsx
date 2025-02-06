@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import SearchContent from "./_components/search-content";
 
 const SearchPage = () => {

@@ -14,6 +14,21 @@ export const registerMutationFn = async (data: RegisterType) =>
 
 export const logoutMutationFn = async () => await axios.post("/api/logout");
 
+export const getCurrentUserMutationFn = async () => {
+  const response = await axios.get("/api/current-user");
+  return response.data;
+};
+
+// Add listing
+export const addListingMutationFn = async (data: ListingType) =>
+  await axios.post("/api/add-listing", data);
+
+// Get My shop and listings
+export const getMyShopQueryFn = async () => {
+  const response = await axios.get("/api/shop");
+  return response.data;
+};
+
 //get all Lising and query
 
 export const getAllCarListingQueryFn = async ({
@@ -50,24 +65,9 @@ export const getSingleListingQueryFn = async (listingId: string) => {
   return response.data;
 };
 
-// Get My shop and listings
-export const getMyShopQueryFn = async () => {
-  const response = await axios.get("/api/shop");
-  return response.data;
-};
-
 // Get Shop by shopId
 export const getShopByIdQueryFn = async (shopId: string) => {
   console.log(shopId);
   const response = await axios.get(`/api/shop/${shopId}`);
-  return response.data;
-};
-
-// Add listing
-export const addListingMutationFn = async (data: ListingType) =>
-  await axios.post("/api/add-listing", data);
-
-export const getCurrentUserMutationFn = async () => {
-  const response = await axios.get("/api/current-user");
   return response.data;
 };

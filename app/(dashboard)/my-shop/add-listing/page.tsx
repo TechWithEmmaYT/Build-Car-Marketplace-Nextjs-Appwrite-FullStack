@@ -29,7 +29,7 @@ import {
   CAR_COLOR_OPTIONS,
   CAR_MODEL_OPTIONS,
   CAR_YEAR_OPTIONS,
-} from "@/constants/cars";
+} from "@/constants/car-options";
 
 const AddListing = () => {
   const router = useRouter();

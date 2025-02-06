@@ -11,7 +11,7 @@ import {
   CAR_KEY_FEATURES_OPTIONS,
   CAR_BODY_TYPE_OPTIONS,
   CAR_DRIVETRAIN_OPTIONS,
-} from "@/constants/cars";
+} from "@/constants/car-options";
 
 const createEnum = (options: { value: string }[], fieldName: string) => {
   const values = options.map((item) => item.value);

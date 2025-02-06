@@ -16,14 +16,18 @@ const HeroSection = () => {
         className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center 
       justify-between gap-8  py-8 lg:py-16"
       >
-        <div className="flex-1">
+        <div className="flex-1 px-10 md:px-0">
           <Card className="!max-w-[29rem] w-full shadow-sm">
             <CardContent className="py-10 px-5 ">
               <div className="w-full flex flex-col items-center">
-                <h2 className="text-[46px] font-extrabold leading-[50px]">
+                <h2
+                  className="text-[30px] md:text-[46px] 
+                font-extrabold leading-10 md:leading-[50px]"
+                >
                   <span>
                     Find the Car You <br /> Want,{" "}
                   </span>
+
                   <span className="text-primary">Your Way</span>
                 </h2>
                 <HeroFilter />
@@ -33,7 +37,7 @@ const HeroSection = () => {
         </div>
 
         <div className="flex-1 ml-auto ">
-          <div className="relative w-full md:w-[500px] lg:w-[700px] mt-8 lg:mt-0">
+          <div className="relative w-[350px] md:w-[500px] lg:w-[700px] mt-5 md:mt-8 lg:mt-0">
             <Image
               aria-hidden
               src="/images/hero-car.png"

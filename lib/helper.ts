@@ -1,4 +1,4 @@
-import { CAR_PRICE_RANGE_OPTIONS } from "@/constants/cars";
+import { CAR_PRICE_RANGE_OPTIONS } from "@/constants/car-options";
 
 export function createSlug(name: string): string {
   const lowerCaseName = name?.toLowerCase();

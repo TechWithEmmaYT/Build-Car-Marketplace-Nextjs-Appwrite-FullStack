@@ -11,8 +11,6 @@ export async function POST(request: Request) {
 
     const { shopId } = validatedData;
 
-    console.log(shopId, "shopId");
-
     const { account, databases } = await createSessionClient();
     const user = await account.get();
 
@@ -21,8 +19,6 @@ export async function POST(request: Request) {
       APP_CONFIG.APPWRITE.SHOP_ID,
       shopId
     );
-
-    console.log(shop, "shop");
 
     if (!shop || shop.userId !== user.$id) {
       return NextResponse.json(

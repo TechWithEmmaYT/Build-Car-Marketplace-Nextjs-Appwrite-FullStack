@@ -20,7 +20,7 @@ import {
   CAR_MODEL_OPTIONS,
   CAR_PRICE_RANGE_OPTIONS,
   CAR_YEAR_RANGE_OPTIONS,
-} from "@/constants/cars";
+} from "@/constants/car-options";
 
 interface FilterOption {
   label: string;
